@@ -51,6 +51,12 @@ class Image(models.Model):
     picture = models.ImageField(blank=True)
     item = models.ForeignKey(Item, related_name='images', on_delete=models.CASCADE)  # many-to-one, many images to one item, item.images will access them
 
+    def __str__(self):
+        try:
+            return self.picture.url
+        except:
+            return "Image " + str(self.pk)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=256, blank=True)  # category's name
