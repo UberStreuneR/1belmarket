@@ -1,0 +1,342 @@
+/* Resetting Styles */
+
+/* Specify box sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Removing paddings */
+ul[class],
+ol[class] {
+    padding: 0;
+}
+
+/* Removing margins */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+/* Setting the basic default settings for body */
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+/* Removing the standard styling for all ul and il that have the class attribute*/
+ul[class],
+ol[class] {
+    list-style: none;
+}
+
+/* Elements of a that do not have a class are reset to default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Simplify working with images */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* We specify a clear frequency in the data stream of the article*/
+article > * + * {
+    margin-top: 1em;
+}
+
+/* Inheriting fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Removing all animations and transitions for people who prefer not to use them */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* MAIN CSS */
+
+/* SWIPER */
+
+/* This block contains styles for the slider */
+
+.main-swiper-slider {
+    /* Styles for main container */
+    position: absolute;
+    width: 100%;
+    height: 90vh;
+    min-width: 0;
+
+    overflow-y: hidden;
+}
+
+.swiper-wrapper {
+    /* Styles for wrapper */
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.slide-on-main-swiper-slider,
+.main_slide {
+    /* Styles for all slides on container */
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* Styles for pagination */
+
+.main-swiper-pagination {
+    position: absolute;
+    right: 6%;
+    top: 41%;
+
+    padding: 15px;
+
+    min-width: 0;
+}
+
+.main-swiper-pagination-element {
+    margin: 10px;
+
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: center;
+
+    min-width: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+}
+
+.main-swiper-pagination-element-name {
+    font-family: "Times New Roman, Times, serif";
+    font-size: 16px;
+    margin-right: 5px;
+    color: #161616;
+    font-weight: inherit;
+    opacity: 0;
+    cursor: pointer;
+    min-width: 0;
+    transition: 0.5s opacity, 0.4s font-weight, 0.4s color;
+    -webkit-transition: 0.5s opacity, 0.4s font-weight, 0.4s color;
+    -moz-transition: 0.5s opacity, 0.4s font-weight, 0.4s color;
+    -ms-transition: 0.5s opacity, 0.4s font-weight, 0.4s color;
+    -o-transition: 0.5s opacity, 0.4s font-weight, 0.4s color;
+}
+
+.main-swiper-pagination-element-circle {
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    margin-bottom: 1px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: inline-block;
+    border: solid 1px;
+
+    min-width: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+/* Styles for hover of pagination menu */
+
+.main-swiper-pagination:hover .main-swiper-pagination-element-name {
+    opacity: 1;
+}
+
+/* Styles for hover of pagination elements */
+
+.main-swiper-pagination-element .main-swiper-pagination-element-name:hover,
+.main-swiper-pagination-element
+    .main-swiper-pagination-element-circle:hover
+    ~ .main-swiper-pagination-element-name {
+    color: black;
+    font-weight: bold;
+    transition: 0.4s font-weight, 0.4s color;
+    -webkit-transition: 0.4s font-weight, 0.4s color;
+    -moz-transition: 0.4s font-weight, 0.4s color;
+    -ms-transition: 0.4s font-weight, 0.4s color;
+    -o-transition: 0.4s font-weight, 0.4s color;
+}
+
+.main-swiper-pagination-element-selected
+    .main-swiper-pagination-element-name:hover,
+.main-swiper-pagination-element-selected
+    .main-swiper-pagination-element-circle:hover
+    ~ .main-swiper-pagination-element-name {
+    color: rgb(49, 127, 146);
+    font-weight: bold;
+}
+
+/* Styles for selected pagination element */
+
+.main-swiper-pagination-element-selected .main-swiper-pagination-element-name {
+    color: rgb(49, 127, 146);
+    font-weight: bold;
+}
+
+.main-swiper-pagination-element-selected
+    .main-swiper-pagination-element-circle {
+    background-color: rgb(111, 168, 182);
+}
+
+/* Styles for main slides */
+
+.main_slide {
+    background-color: rgb(237, 238, 240);
+}
+
+/* This block contains styles for the zero slide of the main slider */
+
+#slide_0 {
+    background-color: rgb(237, 238, 240);
+}
+
+/* This block contains styles for the first slide of the main slider */
+
+#slide_1 {
+    background-color: rgb(237, 238, 240);
+}
+
+/* This block contains styles for the second slide of the main slider */
+
+#slide_2 {
+    background-color: rgb(237, 238, 240);
+}
+
+/* This block contains styles for the third slide of the main slider */
+
+#slide_3 {
+    background-color: rgb(237, 238, 240);
+}
+
+/* This block contains styles for the fourth slide of the main slider */
+
+#slide_4 {
+    background-color: rgb(237, 238, 240);
+}
+
+/* Styles for header on slides */
+
+.main-header {
+    top: 0;
+    height: 10vh;
+    width: 100%;
+    background-color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title {
+    color: grey;
+    margin-left: 10%;
+    font-size: 40px;
+}
+
+/* Styles for button-menu */
+
+.menu-button {
+    margin-right: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 40px;
+    cursor: pointer;
+}
+.menu-button span {
+    height: 6px;
+    width: 50px;
+    background-color: grey;
+    border-radius: 20px;
+    position: absolute;
+    transition-duration: 0.25s;
+    transition-delay: 0.25s;
+}
+.menu-button span:before {
+    left: 0;
+    position: absolute;
+    top: -14px;
+    height: 6px;
+    width: 50px;
+    background-color: grey;
+    content: "";
+    border-radius: 20px;
+    transition-duration: 0.25s;
+    transition: transform 0.25s, top 0.25s 0.25s;
+}
+.menu-button span:after {
+    left: 0;
+    position: absolute;
+    top: 14px;
+    height: 6px;
+    width: 50px;
+    background-color: grey;
+    content: "";
+    border-radius: 20px;
+    transition-duration: 0.25s;
+    transition: transform 0.25s, top 0.25s 0.25s;
+}
+.menu-button.open span {
+    transition-duration: 0.1s;
+    transition-delay: 0.25s;
+    background: transparent;
+}
+.menu-button.open span:before {
+    transition: top 0.25s, transform 0.25s 0.25s;
+    top: 0px;
+    transform: rotateZ(-45deg);
+}
+.menu-button.open span:after {
+    transition: top 0.4s, transform 0.25s 0.25s;
+    top: 0px;
+    transform: rotateZ(45deg);
+}
+
+.menu-popup {
+    position: absolute;
+    visibility: hidden;
+    width: 100%;
+    height: 90vh;
+    min-width: 0;
+
+    overflow-y: hidden;
+    background-color: rgb(237, 238, 240);
+}
