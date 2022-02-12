@@ -6,9 +6,40 @@ from django.utils import timezone
 from client.models import Client
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=256, blank=True)  # category's name
+    hierarchy = models.CharField(max_length=500, blank=True)  # "Food;Meat;Beef" or such
+    parent = models.ForeignKey('self', related_name='subcategories', on_delete=models.CASCADE, blank=True, null=True)
+    parent_string = models.CharField(max_length=256, blank=True)  # string representation of parent's alleged name
+    is_child_a_category = models.BooleanField(default=False)  # children of it can either be items or categories, but not both
+    picture = models.ImageField(blank=True, upload_to='categories')  # the kind of image that would be seen in market category grid
+
+    def __str__(self): # method invoked when an object is printed, like print(category_obj) or in html template {{ category_obj }}
+        return self.name
+
+    def save(self, *args, **kwargs):
+        #TODO: handle is child a category
+        if self.parent_string and self.parent is None:  # if there is a parent string but parent object is not specified (blank)
+            queryset = Category.objects.filter(name=self.parent_string)
+            if queryset:  # if there are objects with name=self.parent_string, acquire the first of it
+                self.parent = queryset[0]
+                self.parent.is_child_a_category = True  # Basically since the parent now has a subcategory, its is_child_a_category should equal True
+                self.parent.save()
+        if self.parent is not None:
+            if self.parent.hierarchy == "":  # if parent hierarchy is an empty string, we set hierarchy to just parent name
+                self.hierarchy = self.parent.name
+            else:  # otherwise parent's hierarchy also takes place: "Food;Meat" + ";" + "Beef"
+                self.hierarchy = self.parent.hierarchy + ";" + self.parent.name
+        super(Category, self).save(*args, **kwargs)
+    #def get_absolute_url(self):  # url to display on page that you can click and go to category grid
+
+    class Meta:
+        verbose_name_plural = 'categories'  # when displayed as plural (admin page), will be "categories" instead of the default "categorys"
+
+
 class Item(models.Model):
 
-    parent_category = models.CharField(max_length=200, blank=True)  # parent category
+    parent_category = models.OneToOneField(Category, on_delete=models.CASCADE, blank=True)  # parent category
     hierarchy = models.CharField(max_length=500, blank=True)  # "Food;Meat;Beef" or such
     name = models.CharField(max_length=256, blank=True)
     slug = models.SlugField(blank=True)  # slug of item's name that will form a url to the item
@@ -20,6 +51,10 @@ class Item(models.Model):
     company = models.CharField(max_length=80, blank=True)  # manufacturer company
     description = models.TextField(blank=True)
     #video, like a youtube link or url
+
+
+
+
     # def get_absolute_url(self):
     #     return reverse("item", kwargs={'company': self.company, 'article': self.article})
 
@@ -44,11 +79,12 @@ class Item(models.Model):
         #     if self.name[0] != " " and self.name[:-1] != " ":
         #         self.name = " " + self.name + " "
         #     self.name_lowercase = self.name.lower()
+        self.hierarchy = self.parent_category.hierarchy + ";" + self.parent_category.name
         super(Item, self).save(*args, **kwargs)
         
 
 class Image(models.Model):
-    picture = models.ImageField(blank=True)
+    picture = models.ImageField(blank=True, upload_to='items')
     item = models.ForeignKey(Item, related_name='images', on_delete=models.CASCADE)  # many-to-one, many images to one item, item.images will access them
 
     def __str__(self):
@@ -56,21 +92,6 @@ class Image(models.Model):
             return self.picture.url
         except:
             return "Image " + str(self.pk)
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=256, blank=True)  # category's name
-    hierarchy = models.CharField(max_length=500, blank=True)  # "Food;Meat;Beef" or such
-    is_child_a_category = models.BooleanField(default=True)  # children of it can either be items or categories, but not both
-    picture = models.ImageField(blank=True)  # the kind of image that would be seen in market category grid
-
-    def __str__(self): # method invoked when an object is printed, like print(category_obj) or in html template {{ category_obj }}
-        return self.name
-
-    #def get_absolute_url(self):  # url to display on page that you can click and go to category grid
-
-    class Meta:
-        verbose_name_plural = 'categories'  # when displayed as plural (admin page), will be "categories" instead of the default "categorys"
 
 
 class OrderItem(models.Model):  # the model allows you to have a count of an item in your cart, like 10 apples
@@ -127,8 +148,3 @@ class Order(models.Model):
             for i in range(3, len(int_price) + 1, 4):
                 int_price = int_price[:-i] + " " + int_price[-i:]
             return int_price
-
-class File(models.Model):
-    order = models.ForeignKey(Order, related_name='files', on_delete=models.CASCADE)  # order to which a file is associated
-    name = models.CharField(blank=True, null=True, max_length=200)  # filename
-    file = models.FileField(blank=True, null=True, upload_to='static/cart_files/')  # literal file path
