@@ -27,17 +27,7 @@
 • Установить миграции командой "python3 manage.py migrate"
 • Теперь зайдём в папку 1belmarket/frontend через командную строку или Visual Studio Code
 • Для начала установим пакеты «node.js» и «react»
-• Затем, установим следующие пакеты
-◦ npm init -y
-◦ npm i webpack webpack-cli --save-dev
-◦ npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
-◦ npm i react react-dom --save-dev
-◦ npm install @material-ui/core
-◦ npm install @babel/plugin-proposal-class-properties
-◦ npm install react-router-dom
-◦ npm install @material-ui/icons
-◦ npm install swiper — обязательно версии 8.0.0
-◦ npm install react-router-dom
+• Затем, установим следующие пакеты командой "npm install" - установит все необходимые пакеты из package.json
 
 Инструкция по запуску проекта:
 Запуск backend на django:

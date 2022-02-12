@@ -10,7 +10,6 @@ export default function App() {
         <BrowserRouter>
             <Routes>
                 <Route exact path="/" element={<Info />} />
-
                 <Route path="/market" element={<Market />} />
             </Routes>
         </BrowserRouter>

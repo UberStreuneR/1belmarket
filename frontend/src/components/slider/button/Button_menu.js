@@ -5,21 +5,8 @@ function transformMenu() {
     let x = document.getElementsByClassName("menu-button")[0];
     if (x) {
         x.classList.toggle("open");
-        if (x.classList[1] == "open") {
-            let elem_popup_menu =
-                document.getElementsByClassName("menu-popup")[0];
-            let elem_swiper_slider =
-                document.getElementsByClassName("main-swiper-slider")[0];
-            elem_popup_menu.style.visibility = "visible";
-            elem_swiper_slider.style.visibility = "hidden";
-        } else {
-            let elem_popup_menu =
-                document.getElementsByClassName("menu-popup")[0];
-            let elem_swiper_slider =
-                document.getElementsByClassName("main-swiper-slider")[0];
-            elem_popup_menu.style.visibility = "hidden";
-            elem_swiper_slider.style.visibility = "visible";
-        }
+        let elem_popup_menu = document.getElementsByClassName("menu-popup")[0];
+        elem_popup_menu.classList.toggle("open");
     }
 }
 
