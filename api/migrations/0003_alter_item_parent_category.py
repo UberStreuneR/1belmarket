@@ -7,13 +7,13 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('market', '0002_alter_category_picture_alter_image_picture_and_more'),
+        ('api', '0002_alter_category_picture_alter_image_picture_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='item',
             name='parent_category',
-            field=models.OneToOneField(blank=True, on_delete=django.db.models.deletion.CASCADE, to='market.category'),
+            field=models.OneToOneField(blank=True, on_delete=django.db.models.deletion.CASCADE, to='api.category'),
         ),
     ]

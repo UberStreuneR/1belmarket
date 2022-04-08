@@ -4,9 +4,12 @@ from . import views
 
 urlpatterns = [
     path('items/', views.ItemViewSet.as_view()),
+    path('items-search/<str:key>', views.ItemSearchViewSet.as_view()),
     path('categories/', views.CategoryViewSet.as_view()),
     path('categories-search/<str:key>', views.CategorySearchViewSet.as_view()),
     path('categories-children/<str:name>', views.CategoryChildrenViewSet.as_view()),
     path('orders/', views.OrderViewSet.as_view()),
+    path('upload-items/', views.UploadItemsFromExcel.as_view(), name='upload-items'),
+    path('upload-categories/', views.UploadCategoriesFromExcel.as_view(), name='upload-categories'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

@@ -4,6 +4,5 @@ from .views import index
 urlpatterns = [
     path('', index),
     path('market/', index),
-    path('api/', include('market.urls'))
-
+    path('api/', include('api.urls'))
 ]

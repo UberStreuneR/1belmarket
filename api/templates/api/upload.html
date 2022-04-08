@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Upload: {{ title }}
+{% if title == 'items' %}
+<form enctype="multipart/form-data" action="{% url 'upload-items' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-outline-success" type="submit">Update</button>
+</form>
+{% else %}
+    <form enctype="multipart/form-data" action="{% url 'upload-categories' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-outline-success" type="submit">Update</button>
+</form>
+{% endif %}
+</body>
+</html>
