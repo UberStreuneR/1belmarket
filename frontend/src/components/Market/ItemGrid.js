@@ -1,7 +1,9 @@
 import React from "react";
-import { Container, Grid, Stack } from "@mui/material";
+import { Container, Grid, Stack, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import ItemCard from "./ItemCard";
-import ItemsMenu from "./ItemsMenu";
+
 const items = [
   {
     name: "Beef",
@@ -33,22 +35,20 @@ const items = [
   },
 ];
 
-const cardWidth = "250px";
+const cardWidth = 250;
 
 function ItemGrid() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const width = matches ? cardWidth * 3 + 32 : cardWidth * 2 + 16;
   return (
-    <Container sx={{ my: 3 }}>
-      <Stack direction="row" spacing={2}>
-        <ItemsMenu />
-        <Grid container spacing={2}>
-          {items.map((card) => (
-            <Grid item key={card.id} xs={12} sm={6} md={4}>
-              <ItemCard card={card} />
-            </Grid>
-          ))}
+    <Grid container spacing={2} sx={{ width: width }}>
+      {items.map((card) => (
+        <Grid item key={card.id} xs={12} sm={6} md={4}>
+          <ItemCard card={card} />
         </Grid>
-      </Stack>
-    </Container>
+      ))}
+    </Grid>
   );
 }
 
