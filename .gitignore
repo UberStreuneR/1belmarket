@@ -25,6 +25,7 @@ db.sqlite3-journal
 
 # React
 node_modules/
+main.js
 
 # Distribution / packaging
 .Python
