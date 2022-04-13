@@ -49,10 +49,11 @@ class Item(models.Model):
     article = models.CharField(max_length=30, blank=True)  #! vendor code that we come up with
     weight = models.FloatField(blank=True, null=True)  # weight
     weight_measure_unit = models.CharField(max_length=20, default="кг")  # measure unit of weight, kg by default, could be "g"
-    price = models.FloatField(default=0, blank=True)  #! price in roubles
+    price = models.FloatField(default=0, blank=True)  #! price in USD
     country = models.CharField(max_length=50, blank=True)  # manufacturer country (Belarus, etc.)
     company = models.CharField(max_length=80, blank=True)  # manufacturer company
     description = models.TextField(blank=True)
+    rating = models.FloatField(blank=True, null=True)  # 0 to 5 with 0.5 increment
     #video, like a youtube link or url
 
 

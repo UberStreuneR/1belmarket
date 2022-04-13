@@ -114,8 +114,9 @@ class UploadItemsFromExcel(UserPassesTestMixin, LoginRequiredMixin, View):
                 #TODO: if no pictures then some default will be set, but for now they are necessary
                 if Item.objects.filter(article=article).exists():
                     continue
-                item = Item.objects.create(name=name, parent_string=parent_string, article=article, price=price)
+
                 print(name, article, pictures)  # Beef Belarus BEEF-1 ['C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef.jfif', 'C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef2.jfif']
+                item = Item.objects.create(name=name, parent_string=parent_string, article=article, price=price)
                 if pictures is not None:
                     for picture in pictures:
                         path = Path(picture)  # for each picture we get its path

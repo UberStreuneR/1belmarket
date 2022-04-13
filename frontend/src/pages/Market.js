@@ -1,7 +1,6 @@
 import React from "react";
-import PricingContent from "../components/TestComponents/PricingContent";
-import ItemGrid from "../components/Market/ItemGrid";
-import ItemsMenu from "../components/Market/ItemsMenu";
+import Items from "../components/Market/Items";
+
 export default function Market() {
-  return <ItemGrid />;
+  return <Items />;
 }

@@ -16,7 +16,7 @@ const categories = [
   { title: "Мясо, птица, кролик", id: 4 },
 ];
 
-function ItemsMenu(props) {
+function ItemMenu(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -32,13 +32,13 @@ function ItemsMenu(props) {
         .map((category) => (
           <ListItemButton key={category.id}>
             <ListItemText>
-              <Typography variant="body2">{category.title}</Typography>
+              <Typography variant="body1">{category.title}</Typography>
             </ListItemText>
           </ListItemButton>
         ))}
       <ListItemButton key={categories[3].id} onClick={handleClick}>
         <ListItemText>
-          <Typography variant="body2">{categories[3].title}</Typography>
+          <Typography variant="body1">{categories[3].title}</Typography>
         </ListItemText>
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -46,7 +46,7 @@ function ItemsMenu(props) {
         <List component="div" disablePadding>
           <ListItemButton key={categories[2].id} onClick>
             <ListItemText>
-              <Typography variant="body2">{categories[2].title}</Typography>
+              <Typography variant="body1">{categories[2].title}</Typography>
             </ListItemText>
           </ListItemButton>
         </List>
@@ -55,4 +55,4 @@ function ItemsMenu(props) {
   );
 }
 
-export default ItemsMenu;
+export default ItemMenu;
