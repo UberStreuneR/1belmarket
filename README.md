@@ -33,6 +33,7 @@
 Запуск backend на django:
 • Заходим в корневую папку проекта „1belmarket“
 • Запускаем виртуальное окружение
+• Вводим команду: "python manage.py collectstatic"
 • Вводим команду: „python manage.py runserver“
 Запуск frontend на react
 • Заходим в папку 1belmarket/frontend
