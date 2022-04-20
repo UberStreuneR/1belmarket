@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.IntegerField(default=1)),
                 ('ordered', models.BooleanField(default=False)),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='market.item')),
+                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.item')),
             ],
         ),
         migrations.CreateModel(
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('fulfilled', models.BooleanField(default=False)),
                 ('paid', models.BooleanField(default=False)),
                 ('client', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='client.client')),
-                ('items', models.ManyToManyField(blank=True, to='market.OrderItem')),
+                ('items', models.ManyToManyField(blank=True, to='api.OrderItem')),
             ],
         ),
         migrations.CreateModel(
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('picture', models.ImageField(blank=True, upload_to='')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='market.item')),
+                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='api.item')),
             ],
         ),
         migrations.CreateModel(
@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=200, null=True)),
                 ('file', models.FileField(blank=True, null=True, upload_to='static/cart_files/')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='market.order')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='api.order')),
             ],
         ),
     ]

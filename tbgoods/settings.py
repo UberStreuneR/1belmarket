@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'landing.apps.LandingConfig',
-    'market.apps.MarketConfig',
+    'api.apps.MarketConfig',
     'frontend.apps.FrontendConfig',
     'client.apps.ClientConfig',
     'rest_framework'
@@ -126,7 +126,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 

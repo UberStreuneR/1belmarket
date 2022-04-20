@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'landing.apps.LandingConfig',
-    'market.apps.MarketConfig',
+    'api.apps.MarketConfig',
     'frontend.apps.FrontendConfig'
 ]
 
