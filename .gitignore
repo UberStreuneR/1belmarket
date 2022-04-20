@@ -20,12 +20,12 @@ __pycache__/
 settings.py
 db.sqlite3
 db.sqlite3-journal
-/static/
+frontend/static/frontend/
 /media/
+/static/
 
 # React
 node_modules/
-frontend/static/
 
 # Distribution / packaging
 .Python
