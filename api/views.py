@@ -16,6 +16,8 @@ from django.core.files import File
 from django.conf import settings
 import os
 
+DEFAULT_IMAGE_PATH = Path(Path(__file__).resolve().parent.parent, "default_images_and_spreadsheets") # /belmarket/default_images_and_spreadsheets
+
 
 class ItemViewSet(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -111,15 +113,19 @@ class UploadItemsFromExcel(UserPassesTestMixin, LoginRequiredMixin, View):
                     pictures = pictures.split(";")
                 else:
                     pictures = None
-                #TODO: if no pictures then some default will be set, but for now they are necessary
                 if Item.objects.filter(article=article).exists():
                     continue
-
-                print(name, article, pictures)  # Beef Belarus BEEF-1 ['C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef.jfif', 'C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef2.jfif']
+                print("row: ", row)
+                print("name, article, pictures: ", name, article, pictures)  # Beef Belarus BEEF-1 ['C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef.jfif', 'C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef2.jfif']
                 item = Item.objects.create(name=name, parent_string=parent_string, article=article, price=price)
+                media_items_path = os.path.join(settings.MEDIA_ROOT, "items")  # initial image path
+                try:
+                    os.mkdir(media_items_path)
+                except FileExistsError:
+                    pass
                 if pictures is not None:
                     for picture in pictures:
-                        path = Path(picture)  # for each picture we get its path
+                        path = Path(DEFAULT_IMAGE_PATH, picture)  # for each picture we get its path
                         with path.open(mode='rb') as f:  # open it as f
                             image = Image.objects.create(item=item)  # create and Image instance
                             image_path = os.path.join(settings.MEDIA_ROOT, "items")  # initial image path
@@ -168,15 +174,33 @@ class UploadCategoriesFromExcel(UserPassesTestMixin, LoginRequiredMixin, View):
                 if Category.objects.filter(name=name).exists():  # if already is such category then skip iteration
                     continue
                 category = Category.objects.create(name=name, parent_string=parent_string)
-                print(name, picture, type(picture))
                 if type(picture) == str:
-                    path = Path(picture)
+                    path = Path(DEFAULT_IMAGE_PATH, picture)
                     with path.open(mode='rb') as f:
                         category.picture = File(f, name=category.name + ".jpg")  # creating file, writing it down and saving the model
                         category.save()
                         continue  # to skip the next category.save() as unnecessary
                 category.save()
             return redirect("/")
+
+    def test_func(self):  # test function for "UserPassesTestMixin", in which case it's just a boolean of user being a staff member
+        return self.request.user.is_staff
+
+
+class DeleteItemsView(UserPassesTestMixin, LoginRequiredMixin, View):
+
+    def get(self, *args, **kwargs):
+        Item.objects.all().delete()
+        return redirect("/")
+
+    def test_func(self):  # test function for "UserPassesTestMixin", in which case it's just a boolean of user being a staff member
+        return self.request.user.is_staff
+
+class DeleteCategoriesView(UserPassesTestMixin, LoginRequiredMixin, View):
+
+    def get(self, *args, **kwargs):
+        Category.objects.all().delete()
+        return redirect("/")
 
     def test_func(self):  # test function for "UserPassesTestMixin", in which case it's just a boolean of user being a staff member
         return self.request.user.is_staff
