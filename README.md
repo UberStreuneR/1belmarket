@@ -9,7 +9,7 @@
 8. Теперь зайдём в папку 1belmarket/frontend через командную строку или Visual Studio Code
 9. Затем, установим следующие пакеты командой "npm install" - установит все необходимые пакеты из package.json
 
-Инструкция по запуску проекта:
+
 Запуск backend на django:
 1. Заходим в корневую папку проекта „1belmarket“
 2. Запускаем виртуальное окружение
@@ -18,6 +18,7 @@
 5. "python manage.py runserver"
 6. Заходим под созданным суперпользователем по ссылке "host:port/api/api-auth/login"
 7. Если перебросило на "host:port/accounts/profile", то вход успешен
+
 Запуск frontend на react
 1. Заходим в папку 1belmarket/frontend
 2. Вводим команду: „npm run dev“
