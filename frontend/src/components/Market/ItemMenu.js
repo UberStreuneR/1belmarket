@@ -44,9 +44,14 @@ function ItemMenu(props) {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton key={categories[2].id} onClick>
+          <ListItemButton key={categories[2].id} sx={{ pl: 4 }} onClick>
             <ListItemText>
-              <Typography variant="body1">{categories[2].title}</Typography>
+              <Typography variant="subtitle2" color="text.secondary">Говядина</Typography>
+            </ListItemText>
+          </ListItemButton>
+          <ListItemButton key={categories[2].id} sx={{ pl: 4 }} onClick>
+            <ListItemText>
+              <Typography variant="subtitle2" color="text.secondary">Бекон</Typography>
             </ListItemText>
           </ListItemButton>
         </List>
