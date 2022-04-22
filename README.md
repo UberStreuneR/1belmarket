@@ -19,7 +19,7 @@
 6. Заходим под созданным суперпользователем по ссылке "host:port/api/api-auth/login"
 7. Если перебросило на "host:port/accounts/profile", то вход успешен
 
-Запуск frontend на react
+Запуск frontend на react:
 1. Заходим в папку 1belmarket/frontend
 2. Вводим команду: „npm run dev“
 
@@ -32,7 +32,7 @@
 2. В открывшейся форме выбираем файл belmarket/default_images_and_spreadsheets/CategoriesSample.xslx
 3. Загружаем товары: "host:port/api/upload-items"
 4. В открывшейся форме выбираем файл belmarket/default_images_and_spreadsheets/ItemsSample.xslx
-5. Удалить все категории или все товары можно по ссылкам "api/delete-categories" и "api/delete-items"
+5. Удалить все категории или все товары можно по ссылкам "api/delete-categories" и "api/delete-items", или "api/delete-all"
 6. Добавить свои товары или категории можно, изменив указанные .xlsx файлы и загрузив картинки в дефолтную папку
 7. Товары без изображений будут использовать изображения по ссылке "https://source.unsplash.com/random"
 

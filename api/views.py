@@ -115,8 +115,6 @@ class UploadItemsFromExcel(UserPassesTestMixin, LoginRequiredMixin, View):
                     pictures = None
                 if Item.objects.filter(article=article).exists():
                     continue
-                print("row: ", row)
-                print("name, article, pictures: ", name, article, pictures)  # Beef Belarus BEEF-1 ['C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef.jfif', 'C:\\Users\\Best User\\Pictures\\Saved Pictures\\Beef2.jfif']
                 item = Item.objects.create(name=name, parent_string=parent_string, article=article, price=price)
                 media_items_path = os.path.join(settings.MEDIA_ROOT, "items")  # initial image path
                 try:
@@ -199,6 +197,16 @@ class DeleteItemsView(UserPassesTestMixin, LoginRequiredMixin, View):
 class DeleteCategoriesView(UserPassesTestMixin, LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
+        Category.objects.all().delete()
+        return redirect("/")
+
+    def test_func(self):  # test function for "UserPassesTestMixin", in which case it's just a boolean of user being a staff member
+        return self.request.user.is_staff
+
+class DeleteCategoriesAndItemsView(UserPassesTestMixin, LoginRequiredMixin, View):
+
+    def get(self, *args, **kwargs):
+        Item.objects.all().delete()
         Category.objects.all().delete()
         return redirect("/")
 

@@ -13,5 +13,6 @@ urlpatterns = [
     path('upload-categories/', views.UploadCategoriesFromExcel.as_view(), name='upload-categories'),
     path('delete-items/', views.DeleteItemsView.as_view(), name='delete-items'),
     path('delete-categories/', views.DeleteCategoriesView.as_view(), name='delete-categories'),
+    path('delete-all/', views.DeleteCategoriesAndItemsView.as_view(), name='delete-all'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
