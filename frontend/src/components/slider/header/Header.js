@@ -16,7 +16,7 @@ export default function Header(props) {
                 id="site-title_1"
                 onClick={change_to_first_slide_click_event}
             >
-                Tbgoods
+                Market
             </div>
             <Button_menu />
         </div>
