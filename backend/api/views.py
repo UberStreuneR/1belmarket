@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
 from .serializers import ItemSerializer, CategorySerializer, OrderSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,16 +19,10 @@ import os
 DEFAULT_IMAGE_PATH = Path(Path(__file__).resolve().parent.parent, "default_images_and_spreadsheets") # /belmarket/default_images_and_spreadsheets
 
 
-class ItemViewSet(APIView):
+class ItemViewSet(generics.ListAPIView):
+    serializer_class = ItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def get_queryset(self):
-        return Item.objects.all()
-
-    def get(self, request):
-        items = self.get_queryset()
-        serializer = ItemSerializer(items, many=True)
-        return Response(serializer.data)
+    queryset = Item.objects.all()
 
 
 class ItemSearchViewSet(APIView):

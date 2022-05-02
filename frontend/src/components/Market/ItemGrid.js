@@ -3,6 +3,7 @@ import { Container, Grid, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ItemCard from "./ItemCard";
+import { itemsRequestUrl } from "../../constants/global";
 
 // const items = [
 //   {
@@ -40,7 +41,7 @@ const cardWidth = 250;
 function ItemGrid() {
   const [items, setItems] = useState([]);
   useEffect(() => {
-    fetch("/api/items")
+    fetch(itemsRequestUrl)
       .then((res) => res.json())
       .then(data => setItems(data));
   }, []);

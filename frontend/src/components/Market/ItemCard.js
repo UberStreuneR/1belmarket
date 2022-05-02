@@ -39,7 +39,7 @@ function ItemCard({ card }) {
       >
         <FavoriteBorderIcon sx={{ color: "white" }} />
       </IconButton>
-      <CardMedia component="img" height="240" src={card.images[0] ? card.images[0] : image} alt="Just my image" />
+      <CardMedia component="img" height="240" src={card.images[0] ? card.images[0].url : image} alt="Just my image" />
       <CardContent>
         <Typography variant="h5">{card.name}</Typography>
         <Typography variant="body2" color="textSecondary" noWrap>

@@ -97,7 +97,7 @@ class Item(models.Model):
         
 
 def get_upload_path(instance, filename):  # dynamically getting the upload path for a photo
-    return os.path.join(settings.MEDIA_ROOT, "items", instance.item.hierarchy.replace(";", "/"), filename)
+    return os.path.join("items", instance.item.hierarchy.replace(";", "/"), filename)
 
 class Image(models.Model):
     picture = models.ImageField(blank=True, upload_to=get_upload_path)
@@ -105,6 +105,7 @@ class Image(models.Model):
 
     def __str__(self):
         try:
+            print(self.picture.path)
             return self.picture.url
         except:
             return "Image " + str(self.pk)

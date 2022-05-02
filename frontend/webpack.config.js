@@ -1,10 +1,18 @@
-const path = require("path");
-const webpack = require("webpack");
+const path              = require("path");
+const webpack           = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const dotenv            = require("dotenv");
+
+const envFile = `.${process.env.NODE_ENV === "development" ? "dev" : "prod"}.env`;
+
+dotenv.config({
+  path: path.resolve(__dirname, "..", envFile)
+});
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: path.resolve(__dirname, "src", "index.js"),
   output: {
-    path: path.resolve(__dirname, "./static/frontend"),
+    path: path.resolve(__dirname, "build"),
     filename: "[name].js",
   },
   module: {
@@ -16,17 +24,31 @@ module.exports = {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.(s[ac]ss|css)/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
     ],
+  },
+  devServer: {
+    historyApiFallback: true,
+    open: true,
+    compress: true,
+    hot: true,
+    port: 3000,
   },
   optimization: {
     minimize: false,
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src", "index.html"),
+    }),
     new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("development"), //production was there instead
-      },
+      "process.env": JSON.stringify(process.env),
     }),
   ],
 };

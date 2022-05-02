@@ -3,8 +3,16 @@ from rest_framework import serializers
 from .models import Item, Image, Category, Order
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    url = serializers.ImageField(source='picture')
+    
+    class Meta:
+        model = Image
+        fields = ['url']
+
+
 class ItemSerializer(serializers.ModelSerializer):
-    images = serializers.StringRelatedField(many=True)
+    images = ImageSerializer(many=True)
 
     class Meta:
         model = Item
