@@ -87,7 +87,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER', 'belmarket'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'belmarket'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_HOST', '5432')
+        'PORT': os.environ.get('DB_PORT', '5432')
     }
 }
 
@@ -138,3 +138,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Custom settings
+
+# Path to default tables and images
+DEFAULT_IMAGE_PATH = BASE_DIR / 'default_images_and_spreadsheets'

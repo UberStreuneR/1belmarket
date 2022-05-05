@@ -1,4 +1,5 @@
-.PHONY: manual-run manual-run-backend manual-run-frontend manual-install manual-update
+.PHONY: manual-run manual-run-backend manual-run-frontend manual-install manual-update 
+	docker-run docker-stop docker-down
 
 include .dev.env
 
@@ -11,6 +12,10 @@ PYTHON_VENV_FLAG = $(PYTHON_VENV_PATH)/.make_install_flag
 
 NODE_MODULES_PATH = $(FRONTEND_PATH)/node_modules
 NODE_MODULES_FLAG = $(NODE_MODULES_PATH)/.make_install_flag
+
+PROJECT_NAME_DEV = belmarket
+DOCKER_COMPOSE_FLAGS_DEV = -p $(PROJECT_NAME_DEV)
+
 
 all: manual-run
 
@@ -37,3 +42,14 @@ $(NODE_MODULES_FLAG): $(FRONTEND_PATH)/package.json
 
 clean:
 	rm -rf $(PYTHON_VENV_PATH)
+	rm -rf $(NODE_MODULES_PATH)
+
+
+docker-run:
+	docker-compose $(DOCKER_COMPOSE_FLAGS_DEV) up
+
+docker-stop:
+	docker-compose $(DOCKER_COMPOSE_FLAGS_DEV) stop
+
+docker-down:
+	docker-compose $(DOCKER_COMPOSE_FLAGS_DEV) down

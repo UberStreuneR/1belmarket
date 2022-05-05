@@ -1,12 +1,45 @@
 from django.db import models
-from django.shortcuts import reverse
 from django.utils.text import slugify
-from transliterate import translit
-from django.utils import timezone
-from client.models import Client
-import os
+from django.core.files import File
 from django.conf import settings
-#! = necessary field
+from django.utils import timezone
+
+from transliterate import translit
+
+from client.models import Client
+from .utils import get_not_null_row, get_rows
+
+import os, openpyxl
+
+
+class CategoryManager(models.Manager):
+    def create_from_excel(self, file):
+        wb = openpyxl.load_workbook(file)
+        ws = wb.active
+
+        # All arguments of Category model defined in excel
+        keys = get_not_null_row(ws, 0, 1, ws.max_column)
+        # 2d list representing excel table
+        rows = get_rows(ws, 1, ws.max_row, 1, len(keys))
+
+        for row in rows:
+            # { field: value, ... }
+            fields = dict(zip(keys, row))
+
+            if self.filter(name=fields['name']).exists():  # if already is such category then skip iteration
+                continue
+
+            # TODO: УБРАТЬ КОСТЫЛЬ !!!!!
+            if fields['parent_string'] is None:
+                fields['parent_string'] = ''
+
+            picture = fields.pop('picture', None)
+            category = self.create(**fields)
+            
+            if picture is not None:
+                path = os.path.join(settings.DEFAULT_IMAGE_PATH, picture)
+                category.picture = File(open(path, 'rb'), name=category.name + ".jpg")
+                category.save()
 
 
 class Category(models.Model):
@@ -16,6 +49,8 @@ class Category(models.Model):
     parent_string = models.CharField(max_length=256, blank=True)  #! string representation of parent's alleged name
     is_child_a_category = models.BooleanField(default=False)  # children of it can either be items or categories, but not both
     picture = models.ImageField(blank=True, upload_to='categories')  # the kind of image that would be seen in api category grid
+
+    objects = CategoryManager()
 
     def __str__(self): # method invoked when an object is printed, like print(category_obj) or in html template {{ category_obj }}
         return self.name
@@ -39,6 +74,37 @@ class Category(models.Model):
         verbose_name_plural = 'categories'  # when displayed as plural (admin page), will be "categories" instead of the default "categorys"
 
 
+class ItemManager(models.Manager):
+    def create_from_excel(self, file: str):
+        wb = openpyxl.load_workbook(file)
+        ws = wb.active
+        
+        # All arguments of Item model defined in excel
+        keys = get_not_null_row(ws, 0, 1, ws.max_column)
+        # 2d list representing excel table
+        rows = get_rows(ws, 1, ws.max_row, 1, len(keys))
+
+        for row in rows:
+            fields = dict(zip(keys, row))
+
+            if self.filter(article=fields['article']).exists():
+                continue
+
+            pictures = fields.pop('pictures', None)
+            item = self.create(**fields)
+
+            if pictures is not None:
+                pictures = pictures.split(';')
+                for picture_index in range(len(pictures)):
+                    # get path for each picture
+                    path = os.path.join(settings.DEFAULT_IMAGE_PATH, pictures[picture_index])
+
+                    image_name = f"{item.article}_{picture_index}.jpg"    # BEEF-1_0.jpg
+                    image_file = File(open(path, 'rb'), name=image_name)
+                    
+                    Image.objects.create(item=item, picture=image_file)
+
+
 class Item(models.Model):
 
     parent_category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True)  # parent category
@@ -55,6 +121,8 @@ class Item(models.Model):
     description = models.TextField(blank=True)
     rating = models.FloatField(blank=True, null=True)  # 0 to 5 with 0.5 increment
     #video, like a youtube link or url
+
+    objects = ItemManager()
 
 
     # def get_absolute_url(self):

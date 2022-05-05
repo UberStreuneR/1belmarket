@@ -38,6 +38,8 @@ Frontend:
 ```
 git clone https://github.com/UberStreuneR/1belmarket.git
 ```
+Поддерживается работа приложения в Docker-среде. В этом случае установка **не требуется** - следует перейти к [переменным окружения](#ref1).
+
 Создать базу данных PostgreSQL (связать с переменными окружения - см. далее)
 
 Установить переменные окружения.
@@ -59,13 +61,13 @@ make manual-install
 8. Установить пакеты Node.js: `npm i`
 
 ***
-#### Переменные окружения
+#### <a name="ref1"></a> Переменные окружения
 **Обязательно** создание ***.dev.env*** файла в корне проекта (В продакшне *.prod.env*). В нем описываются переменные среды. Обязателен *SECRET_KEY*.
 |Ключ|По умолчанию|Описание|
 |-|-|-|
 |SECRET_KEY||Секретный ключ Django|
 |DEBUG|1|Флаг процесса разработки Django (0/1)|
-|ALLOWED_HOSTS|*|Домены, с короторыми работает Django (разделяются пробелом)|
+|ALLOWED_HOSTS|*|Домены, с которыми работает Django (разделяются пробелом)|
 |DB_ENGINE|postgresql_psycopg2|Бэкенд БД в Django|
 |DB_NAME|belmarket_dev_db|Имя БД|
 |DB_USER|belmarket|Имя пользователя БД|
@@ -74,17 +76,36 @@ make manual-install
 |DB_PORT|5432|Порт БД|
 |DOMAIN|http://localhost:8000|Домен сервера (с протоколом) для запросов с фронтенда<br/> *only for development*|
 |VENV_PATH|backend/venv|Путь к файлам виртуального окружения Python|
+|POSTGRES_USER||Имя пользователя в docker-образе postgres|
+|POSTGRES_PASSWORD||Пароль пользователя в docker-образе postgres|
+|POSTGRES_DB||Имя базы данных в docker-образе postgres|
+|SUPERUSER_EMAIL||E-mail для создания суперпользователя|
+|SUPERUSER_LOGIN|admin|Логин (username) для создания суперпользователя|
+|SUPERUSER_PASSWORD|admin|Пароль для создания суперпользователя|
+
+***Примечания***
+- Ключи *POSTGRES* **обязательны** при сборке через docker-compose. Для этого можно в файле с переменными прописать для всех `POSTGRES_USER=${DB_USER}` - сделать переменные зависимыми от конфигурации Django.
+- Ключи *SUPERUSER* **обязательны** при сборке через docker-compose, но могут быть использованы и при ручном запуске скрипта инициализации *backend/init_script.py*.
 
 ***
 
 ### Запуск
+#### С docker-compose
+Установить все обязательные переменные окружения.
+
+Запуск с использованием *docker-compose* или через *make*:
+```
+make docker-run
+```
+Запустится многоконтейнерное приложение belmarket с контейнерами belmarket_backend, belmarket_frontend, belmarket_database (и 3 соответствующие им образа), а также том belmarket_postgres_volume. Ручное заполнение **не требуется** - автоматически запустится скрипт инициализации, который создаст суперпользователя Django и заполнит базу данными из примеров таблиц.
+#### Без docker-compose
 Запустить *PostgreSQL server*.
 
 Запуск приложения через *make*:
 ```
 make -j2
 ```
-Ручной запуск:
+#### Ручной запуск
 1. Активировать виртуальное окружение
 2. В директории *backend* запустить Django: `python manage.py runserver`
 3. В другом терминале в директории *frontend* запустить Webpack-dev-server: `npm run start`

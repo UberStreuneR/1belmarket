@@ -10,13 +10,11 @@ from django.views import View
 from django.shortcuts import render, redirect
 from .forms import ExcelForm
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-import pandas as pd
+
 from pathlib import Path
 from django.core.files import File
 from django.conf import settings
 import os
-
-DEFAULT_IMAGE_PATH = Path(Path(__file__).resolve().parent.parent, "default_images_and_spreadsheets") # /belmarket/default_images_and_spreadsheets
 
 
 class ItemViewSet(generics.ListAPIView):
@@ -95,44 +93,8 @@ class UploadItemsFromExcel(UserPassesTestMixin, LoginRequiredMixin, View):
 
         if form.is_valid():
             xl = form.cleaned_data['file']
-            df = pd.read_excel(xl)
-            for i in range(len(df.index)):
-                row = df.iloc[i]  # the current row of the excel sheet opened with pandas dataframe
-                name = row['name']
-                parent_string = row['parent_string']
-                article = row['article']
-                price = row['price']
-                pictures = row['pictures']
-                if type(pictures) != float:
-                    pictures = pictures.split(";")
-                else:
-                    pictures = None
-                if Item.objects.filter(article=article).exists():
-                    continue
-                item = Item.objects.create(name=name, parent_string=parent_string, article=article, price=price)
-                media_items_path = os.path.join(settings.MEDIA_ROOT, "items")  # initial image path
-                try:
-                    os.mkdir(media_items_path)
-                except FileExistsError:
-                    pass
-                if pictures is not None:
-                    for picture in pictures:
-                        path = Path(DEFAULT_IMAGE_PATH, picture)  # for each picture we get its path
-                        with path.open(mode='rb') as f:  # open it as f
-                            image = Image.objects.create(item=item)  # create and Image instance
-                            image_path = os.path.join(settings.MEDIA_ROOT, "items")  # initial image path
-                            dirs = item.hierarchy.split(";")  # "Food;Meat;Beef" --> ["Food", "Meat", "Beef"]
-                            for dir in dirs:
-                                image_path = os.path.join(image_path, dir)  # image_path/Food/Meat/Beef
-                                try:
-                                    os.mkdir(image_path)
-                                except FileExistsError:  # if directory already exists
-                                    pass
-                            image_name = item.article + "_" + str(pictures.index(picture)) + ".jpg"  # BEEF-1_0.jpg
-                            image.picture = File(f, name=image_name)  # name goes to filename parameter of get_upload_path in .models
-                            image.save()
-                            continue  # to skip the next category.save() as unnecessary
-                item.save()
+            Item.objects.create_from_excel(xl)
+
             return redirect("/")
 
     def test_func(self):  # test function for "UserPassesTestMixin", in which case it's just a boolean of user being a staff member
@@ -155,24 +117,11 @@ class UploadCategoriesFromExcel(UserPassesTestMixin, LoginRequiredMixin, View):
     #  https://docs.djangoproject.com/en/4.0/topics/files/
     def post(self, *args, **kwargs):
         form = ExcelForm(self.request.POST, self.request.FILES)
+
         if form.is_valid():
             xl = form.cleaned_data['file']
-            df = pd.read_excel(xl)
-            for i in range(len(df.index)):
-                row = df.iloc[i]
-                name = row['name']
-                parent_string = row['parent_string']
-                picture = row['picture']
-                if Category.objects.filter(name=name).exists():  # if already is such category then skip iteration
-                    continue
-                category = Category.objects.create(name=name, parent_string=parent_string)
-                if type(picture) == str:
-                    path = Path(DEFAULT_IMAGE_PATH, picture)
-                    with path.open(mode='rb') as f:
-                        category.picture = File(f, name=category.name + ".jpg")  # creating file, writing it down and saving the model
-                        category.save()
-                        continue  # to skip the next category.save() as unnecessary
-                category.save()
+            Category.objects.create_from_excel(xl)
+
             return redirect("/")
 
     def test_func(self):  # test function for "UserPassesTestMixin", in which case it's just a boolean of user being a staff member
