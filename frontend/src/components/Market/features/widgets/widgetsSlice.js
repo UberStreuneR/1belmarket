@@ -1,7 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+// open/closed widgets' state are handled here
+
 const initialState = {
     favouriteOpen: false
+    //profile, cart, theme go here, favourite/cart items don't go here
 };
 
 export const widgetsSlice = createSlice({

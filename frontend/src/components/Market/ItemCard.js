@@ -13,6 +13,8 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useDispatch } from "react-redux";
+import { addItem } from "./features/widgets/favouriteSlice";
 
 const useStyles = makeStyles({
   itemCard: {
@@ -26,7 +28,13 @@ const useStyles = makeStyles({
 const image = "https://source.unsplash.com/random";
 
 function ItemCard({ card }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const handleFavButtonClicked = () => {
+    dispatch(addItem(card));
+  };
+
   return (
     <Card className={classes.itemCard}>
       <IconButton
@@ -36,10 +44,16 @@ function ItemCard({ card }) {
           padding: 3,
         }}
         aria-label="add to favourites"
+        onClick={handleFavButtonClicked}
       >
         <FavoriteBorderIcon sx={{ color: "white" }} />
       </IconButton>
-      <CardMedia component="img" height="240" src={card.images[0] ? card.images[0].url : image} alt="Just my image" />
+      <CardMedia
+        component="img"
+        height="240"
+        src={card.images[0] ? card.images[0].url : image}
+        alt="Just my image"
+      />
       <CardContent>
         <Typography variant="h5">{card.name}</Typography>
         <Typography variant="body2" color="textSecondary" noWrap>

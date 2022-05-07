@@ -13,21 +13,29 @@ import Box from "@mui/material/Box";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-import {useSelector, useDispatch} from "react-redux";
-import {favOpen, favClose, favSwitch, selectFav} from "./features/widgets/widgetsSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  favOpen,
+  favClose,
+  favSwitch,
+  selectFav,
+} from "./features/widgets/widgetsSlice";
+import { removeItem, selectFavItems } from "./features/widgets/favouriteSlice";
+
 const image = "https://source.unsplash.com/random";
-const faveItems = [
-  { id: 1, title: "Beef", price: 450, description: "Not bad beef, loer" },
-  { id: 2, title: "Chicken", price: 300, description: "Not bad chikin" },
-  { id: 3, title: "Milk", price: 100, description: "Farm milk" },
-];
+// const faveItems = [
+//   { id: 1, title: "Beef", price: 450, description: "Not bad beef, loer" },
+//   { id: 2, title: "Chicken", price: 300, description: "Not bad chikin" },
+//   { id: 3, title: "Milk", price: 100, description: "Farm milk" },
+// ];
 
 function Favourite() {
   const dispatch = useDispatch();
   const open = useSelector(selectFav);
+  const faveItems = useSelector((state) => selectFavItems(state));
 
   const handleClose = () => {
-    dispatch(favClose())
+    dispatch(favClose());
   };
 
   return (
@@ -42,57 +50,71 @@ function Favourite() {
       >
         <DialogTitle
           id="alert-dialog-title"
+          variant={"h4"}
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Typography variant="h4">Понравившиеся</Typography>
+          Понравившиеся
           <IconButton onClick={() => dispatch(favClose())}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent dividers={true}>
-          <Grid container>
-            {faveItems.map((item) => (
-              <Grid item key={item.id} xs={6}>
-                <Card sx={{ display: "flex", m: 1 }}>
-                  <CardMedia
-                    component="img"
-                    sx={{ height: "150px", width: "150px", p: 1 }}
-                    image={image}
-                    alt={"My image"}
-                  />
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      p: 1,
-                      maxWidth: 250,
-                      flex: "1 1 auto",
-                    }}
-                  >
-                    <Typography variant="h5">{item.title}</Typography>
-                    <Typography>{item.description}</Typography>
-                    <Typography variant="h6">${item.price}</Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", flexDirection: "column", p: 1 }}>
+          {faveItems.length > 0 ? (
+            <Grid container>
+              {faveItems.map((item) => (
+                <Grid item key={item.id} xs={6}>
+                  <Card sx={{ display: "flex", m: 1 }}>
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        height: "150px",
+                        width: "150px",
+                        p: 1,
+                        borderRadius: "5%",
+                      }}
+                      image={item.images?.[0]?.url ?? image}
+                      alt={"My image"}
+                    />
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        flexDirection: "column",
+                        p: 1,
+                        maxWidth: 250,
+                        flex: "1 1 auto",
                       }}
                     >
-                      <IconButton>
-                        <ShoppingCartOutlinedIcon />
-                      </IconButton>
-                      <IconButton>
-                        <FavoriteBorderOutlinedIcon />
-                      </IconButton>
+                      <Typography variant="h5">{item.name}</Typography>
+                      <Typography>{item.description}</Typography>
+                      <Typography variant="h6">${item.price}</Typography>
                     </Box>
-                  </Box>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                    <Box
+                      sx={{ display: "flex", flexDirection: "column", p: 1 }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <IconButton>
+                          <ShoppingCartOutlinedIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => dispatch(removeItem(item.id))}
+                        >
+                          <FavoriteBorderOutlinedIcon color={"error"} />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography variant={"h5"}>Uh... It's empty.</Typography>
+          )}
         </DialogContent>
       </Dialog>
     </div>
