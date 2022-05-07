@@ -68,7 +68,7 @@ make manual-install
 |SECRET_KEY||Секретный ключ Django|
 |DEBUG|1|Флаг процесса разработки Django (0/1)|
 |ALLOWED_HOSTS|*|Домены, с которыми работает Django (разделяются пробелом)|
-|DB_ENGINE|postgresql_psycopg2|Бэкенд БД в Django|
+|DB_ENGINE|postgresql_psycopg2|Бэкенд БД в Django (начинается с django.db.backends. при использовании встроенного)|
 |DB_NAME|belmarket_dev_db|Имя БД|
 |DB_USER|belmarket|Имя пользователя БД|
 |DB_PASSWORD|belmarket|Пароль пользователя БД|
@@ -84,8 +84,11 @@ make manual-install
 |SUPERUSER_PASSWORD|admin|Пароль для создания суперпользователя|
 
 ***Примечания***
-- Ключи *POSTGRES* **обязательны** при сборке через docker-compose. Для этого можно в файле с переменными прописать для всех `POSTGRES_USER=${DB_USER}` - сделать переменные зависимыми от конфигурации Django.
-- Ключи *SUPERUSER* **обязательны** при сборке через docker-compose, но могут быть использованы и при ручном запуске скрипта инициализации *backend/init_script.py*.
+- Ключи с установленным в таблице значением по умолчанию **не обязательны** при использовании этих значений.
+- При сборке через docker-compose:
+  - Ключи *POSTGRES* **обязательны**. Для этого можно в файле с переменными прописать `POSTGRES_USER=${DB_USER}`, `POSTGRES_PASSWORD=${DB_PASSWORD}`, `POSTGRES_DB=${DB_NAME}` - сделать переменные зависимыми от конфигурации Django.
+  - Ключи *SUPERUSER* **обязательны**, но могут быть использованы и при ручном запуске скрипта инициализации *backend/init_script.py*.
+  - Ключ *DB_HOST* следует установить в значение **database** (название сервиса в docker-compose).
 
 ***
 
