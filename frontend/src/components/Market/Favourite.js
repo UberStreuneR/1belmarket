@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
@@ -14,24 +13,17 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 import { useSelector, useDispatch } from "react-redux";
+import { favClose, selectFavOpen } from "./features/slices/widgetsSlice";
 import {
-  favOpen,
-  favClose,
-  favSwitch,
-  selectFav,
-} from "./features/widgets/widgetsSlice";
-import { removeItem, selectFavItems } from "./features/widgets/favouriteSlice";
+  removeItemFromFav,
+  selectFavItems,
+} from "./features/slices/favouriteSlice";
 
 const image = "https://source.unsplash.com/random";
-// const faveItems = [
-//   { id: 1, title: "Beef", price: 450, description: "Not bad beef, loer" },
-//   { id: 2, title: "Chicken", price: 300, description: "Not bad chikin" },
-//   { id: 3, title: "Milk", price: 100, description: "Farm milk" },
-// ];
 
 function Favourite() {
   const dispatch = useDispatch();
-  const open = useSelector(selectFav);
+  const open = useSelector(selectFavOpen);
   const faveItems = useSelector((state) => selectFavItems(state));
 
   const handleClose = () => {
@@ -53,7 +45,7 @@ function Favourite() {
           variant={"h4"}
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
-          Понравившиеся
+          Favourite
           <IconButton onClick={() => dispatch(favClose())}>
             <CloseIcon />
           </IconButton>
@@ -102,7 +94,7 @@ function Favourite() {
                           <ShoppingCartOutlinedIcon />
                         </IconButton>
                         <IconButton
-                          onClick={() => dispatch(removeItem(item.id))}
+                          onClick={() => dispatch(removeItemFromFav(item.id))}
                         >
                           <FavoriteBorderOutlinedIcon color={"error"} />
                         </IconButton>

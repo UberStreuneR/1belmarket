@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import {
   Card,
@@ -13,9 +13,19 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { useDispatch } from "react-redux";
-import { addItem } from "./features/widgets/favouriteSlice";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItemToFav,
+  removeItemFromFav,
+  selectFavItemById,
+} from "./features/slices/favouriteSlice";
+import {
+  addItemToCart,
+  removeItemFromCart,
+  selectCartItemById,
+} from "./features/slices/cartSlice";
 const useStyles = makeStyles({
   itemCard: {
     height: "380px",
@@ -31,8 +41,37 @@ function ItemCard({ card }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const handleFavButtonClicked = () => {
-    dispatch(addItem(card));
+  // const [inFav, setInFav] = useState(false);
+  // const [inCart, setInCart] = useState(false);
+
+  const inFavItem = useSelector((state) => selectFavItemById(state, card.id));
+
+  const inCartItem = useSelector((state) => selectCartItemById(state, card.id));
+
+  const item = {
+    id: card.id,
+    name: card.name,
+    price: card.price,
+    amount: 1,
+    images: card.images,
+    description: card.description,
+  };
+  // console.log(card);
+  // console.log(item);
+  const handleAddToFavClicked = () => {
+    dispatch(addItemToFav(item));
+  };
+
+  const handleRemoveFromFavClicked = () => {
+    dispatch(removeItemFromFav(item.id));
+  };
+
+  const handleAddToCartClicked = () => {
+    dispatch(addItemToCart(item));
+  };
+
+  const handleRemoveFromCartClicked = () => {
+    dispatch(removeItemFromCart(item.id));
   };
 
   return (
@@ -44,9 +83,13 @@ function ItemCard({ card }) {
           padding: 3,
         }}
         aria-label="add to favourites"
-        onClick={handleFavButtonClicked}
+        onClick={inFavItem ? handleRemoveFromFavClicked : handleAddToFavClicked}
       >
-        <FavoriteBorderIcon sx={{ color: "white" }} />
+        {inFavItem ? (
+          <FavoriteBorderIcon color={"error"} />
+        ) : (
+          <FavoriteBorderIcon sx={{ color: "white" }} />
+        )}
       </IconButton>
       <CardMedia
         component="img"
@@ -71,9 +114,18 @@ function ItemCard({ card }) {
           size="small"
           readOnly
         />
-        <IconButton aria-label="add to cart">
-          <ShoppingCartOutlinedIcon />
-        </IconButton>
+        {inCartItem ? (
+          <IconButton
+            aria-label="remove cart"
+            onClick={handleRemoveFromCartClicked}
+          >
+            <DeleteOutlineIcon />
+          </IconButton>
+        ) : (
+          <IconButton aria-label="add to cart" onClick={handleAddToCartClicked}>
+            <ShoppingCartOutlinedIcon />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );
