@@ -25,5 +25,6 @@ else:
 categories_filename = 'CategoriesSample.xlsx'
 items_filename = 'ItemsSample.xlsx'
 
-Category.objects.create_from_excel(os.path.join(settings.DEFAULT_IMAGE_PATH, categories_filename))
-Item.objects.create_from_excel(os.path.join(settings.DEFAULT_IMAGE_PATH, items_filename))
+if not Category.objects.exists():
+    Category.objects.create_from_excel(os.path.join(settings.DEFAULT_IMAGE_PATH, categories_filename))
+    Item.objects.create_from_excel(os.path.join(settings.DEFAULT_IMAGE_PATH, items_filename))

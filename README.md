@@ -34,6 +34,8 @@ Frontend:
 
 ## Работа с приложением
 
+- `localhost:8000/docs` - Спецификация API в Swagger
+
 ### Установка
 ```
 git clone https://github.com/UberStreuneR/1belmarket.git
