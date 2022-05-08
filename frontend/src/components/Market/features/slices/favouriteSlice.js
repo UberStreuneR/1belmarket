@@ -9,18 +9,17 @@ export const favouriteSlice = createSlice({
   name: "favourite",
   initialState,
   reducers: {
-    addItem: (state, action) => {
+    addItemToFav: (state, action) => {
       favouriteAdapter.addOne(state, action.payload);
     },
-    removeItem: (state, action) => {
+    removeItemFromFav: (state, action) => {
       favouriteAdapter.removeOne(state, action.payload);
     },
   },
 });
 
-export const { addItem, removeItem } = favouriteSlice.actions;
-export const { selectAll: selectFavItems } = favouriteAdapter.getSelectors(
-  (state) => state.favourite
-);
+export const { addItemToFav, removeItemFromFav } = favouriteSlice.actions;
+export const { selectAll: selectFavItems, selectById: selectFavItemById } =
+  favouriteAdapter.getSelectors((state) => state.favourite);
 
 export default favouriteSlice.reducer;

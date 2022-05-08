@@ -16,6 +16,12 @@ NODE_MODULES_FLAG = $(NODE_MODULES_PATH)/.make_install_flag
 PROJECT_NAME_DEV = belmarket
 DOCKER_COMPOSE_FLAGS_DEV = -p $(PROJECT_NAME_DEV)
 
+back: manual-run-ide-backend
+
+front: manual-run-frontend
+
+manual-run-ide-backend:
+	python $(BACKEND_PATH)/manage.py runserver
 
 all: manual-run
 

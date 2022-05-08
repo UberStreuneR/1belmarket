@@ -7,18 +7,21 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import Favourite from "../Market/Favourite";
-import {useDispatch} from "react-redux";
-import {favOpen} from "./features/widgets/widgetsSlice";
-
+import Cart from "../Market/Cart";
+import { useDispatch, useSelector } from "react-redux";
+import { favOpen, cartOpen } from "./features/slices/widgetsSlice";
+import { selectCartItems } from "./features/slices/cartSlice";
 const RedBadge = styled(Badge)({
   ".css-106c1u2-MuiBadge-badge": { backgroundColor: "red", fontWeight: "bold" },
 });
 
-function OptionsList(props) {
+function OptionsList() {
   const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
   return (
     <React.Fragment>
       <Favourite />
+      <Cart />
       <Stack spacing={1} direction="row">
         <IconButton sx={{ color: "black" }}>
           <BedtimeIcon />
@@ -26,18 +29,22 @@ function OptionsList(props) {
         <IconButton sx={{ color: "black" }}>
           <BedtimeOutlinedIcon />
         </IconButton>
-        <IconButton
-          sx={{ color: "black" }}
-          onClick={() => {
-            dispatch(favOpen());
-          }}
-        >
+        <IconButton sx={{ color: "black" }} onClick={() => dispatch(favOpen())}>
           <FavoriteBorderOutlinedIcon />
         </IconButton>
-        <IconButton sx={{ color: "black" }}>
-          <RedBadge badgeContent={4} color="primary">
-            <ShoppingCartOutlinedIcon />
-          </RedBadge>
+        <IconButton
+          sx={{ color: "black" }}
+          onClick={() => dispatch(cartOpen())}
+        >
+          {cartItems.length > 0 ? (
+            <RedBadge badgeContent={cartItems.length} color="primary">
+              <ShoppingCartOutlinedIcon />
+            </RedBadge>
+          ) : (
+            <Badge badgeContent={cartItems.length} color="primary">
+              <ShoppingCartOutlinedIcon />
+            </Badge>
+          )}
         </IconButton>
         <IconButton sx={{ color: "black" }}>
           <PersonOutlineOutlinedIcon />
