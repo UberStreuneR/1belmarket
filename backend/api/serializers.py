@@ -25,7 +25,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'parent', 'name', 'hierarchy', 'picture']
+        fields = ['id', 'parent', 'name', 'hierarchy', 'picture', 'subcategories']
 
 
 class OrderSerializer(serializers.ModelSerializer):

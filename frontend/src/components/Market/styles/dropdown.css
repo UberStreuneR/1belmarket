@@ -1,0 +1,21 @@
+:root {
+    --speed: 150ms ease-in-out;
+}
+
+.dropdown-paper {
+    position: absolute;
+    /*height: 50vh;*/
+    width: 100%;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    opacity: 0;
+    transform: translateY(-2rem);
+    transition: opacity var(--speed), transform var(--speed) !important;
+    padding: 2rem;
+}
+
+.dropdown-paper.active {
+    transform: translateY(0);
+    opacity: 1;
+}
