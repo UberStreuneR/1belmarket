@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Group
+from django.http import Http404
 from rest_framework import viewsets
 from rest_framework import permissions, status, generics
 from .serializers import ItemSerializer, CategorySerializer, OrderSerializer
@@ -42,10 +43,27 @@ class CategoryViewSet(APIView):
 
     def get(self, request):
         categories = self.get_queryset()
-        serializer = CategorySerializer(categories, many=True)
+        serializer = CategorySerializer(categories, many=True, context={'request': request})
         return Response(serializer.data)
 
+class CategoryDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    # def get_queryset(self):
+    #     return Category.objects.all()
+
+    def get_object(self, pk):
+        try:
+            return Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk):
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category, context={'request': request})
+        return Response(serializer.data)
+
+            
 class CategorySearchViewSet(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 

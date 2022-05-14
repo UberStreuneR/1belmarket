@@ -14,14 +14,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch, useSelector } from "react-redux";
-import { cartClose, selectCartOpen } from "./features/slices/widgetsSlice";
+import { cartClose, selectCartOpen } from "../../redux/slices/widgetsSlice";
 import {
   removeItemFromCart,
   selectCartItems,
   incrementItemAmount,
   decrementItemAmount,
   clearCart,
-} from "./features/slices/cartSlice";
+} from "../../redux/slices/cartSlice";
 
 const image = "https://source.unsplash.com/random";
 

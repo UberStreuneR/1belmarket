@@ -20,12 +20,12 @@ import {
   addItemToFav,
   removeItemFromFav,
   selectFavItemById,
-} from "./features/slices/favouriteSlice";
+} from "../../redux/slices/favouriteSlice";
 import {
   addItemToCart,
   removeItemFromCart,
   selectCartItemById,
-} from "./features/slices/cartSlice";
+} from "../../redux/slices/cartSlice";
 const useStyles = makeStyles({
   itemCard: {
     height: "380px",

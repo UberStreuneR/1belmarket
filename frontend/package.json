@@ -9,7 +9,7 @@
         "dev": "webpack --node-env=development --watch",
         "build": "webpack --node-env=production",
         "watch": "npm run dev",
-        "start": "webpack-dev-server --node-env=development --mode development"
+        "start": "NODE_ENV=development webpack-dev-server --mode development"
     },
     "keywords": [],
     "author": "",
@@ -18,6 +18,7 @@
         "@babel/core": "^7.16.12",
         "@babel/preset-env": "^7.16.11",
         "@babel/preset-react": "^7.16.7",
+        "@svgr/webpack": "^6.2.1",
         "autoprefixer": "^10.4.7",
         "babel-loader": "^8.2.3",
         "clean-webpack-plugin": "^4.0.0",
@@ -44,6 +45,7 @@
         "react-dom": "^17.0.2",
         "react-redux": "^7.2.8",
         "react-router-dom": "^6.0.0-beta.8",
+        "react-transition-group": "^4.4.2",
         "swiper": "^8.0.7"
     },
     "description": "",

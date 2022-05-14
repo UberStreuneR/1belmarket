@@ -4,22 +4,31 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ItemCard from "./ItemCard";
 import { itemsRequestUrl } from "../../constants/global";
+import { useGetItemsQuery } from "../../redux/slices/apiSlice";
 import Pagination from "@mui/material/Pagination";
 
 const cardWidth = 250;
 const pageSize = 3;
 
 function ItemGrid() {
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    fetch(itemsRequestUrl)
-      .then((res) => res.json())
-      .then((data) => setItems(data));
-  }, []);
+  const { data: items, isSuccess } = useGetItemsQuery();
 
-  const pagesAmount = Math.ceil(items.length / pageSize);
+  // useEffect(() => {
+  //   fetch(itemsRequestUrl)
+  //     .then((res) => res.json())
+  //     .then((data) => setItems(data));
+  // }, []);
+  let pagesAmount;
+
+  if (isSuccess) {
+    pagesAmount = Math.ceil(items.length / pageSize);
+    
+  }
+
+  // const pagesAmount = Math.ceil(items.length / pageSize);
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -28,7 +37,7 @@ function ItemGrid() {
   const currentItemData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = currentPage * pageSize;
-    return items.slice(firstPageIndex, lastPageIndex);
+    return items?.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, items]);
 
   const theme = useTheme();
@@ -40,7 +49,7 @@ function ItemGrid() {
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <Grid container spacing={2} sx={{ width: width }}>
-        {currentItemData.map((card) => (
+        {currentItemData?.map((card) => (
           <Grid item key={card.id} xs={12} sm={6} md={4}>
             <ItemCard card={card} />
           </Grid>

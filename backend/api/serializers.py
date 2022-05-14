@@ -16,16 +16,27 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = '__all__'
+        fields = ['id', 'name', 'article', 'price', 'description', 'rating', 'images']
+        # fields = '__all__'
+
+
+class SubcategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
 
 
 class CategorySerializer(serializers.ModelSerializer):
     # queryset = Category.objects.prefetch_related('subcategories')
-    parent = serializers.StringRelatedField()
+    # parent = serializers.StringRelatedField() 
+    # subcategories = serializers.HyperlinkedRelatedField(view_name="category-detail", read_only=True, many=True)
+    subcategories = SubcategorySerializer(many=True)
 
     class Meta:
         model = Category
-        fields = ['id', 'parent', 'name', 'hierarchy', 'picture', 'subcategories']
+        fields = ['id', 'name', 'picture', 'subcategories']
+
+
 
 
 class OrderSerializer(serializers.ModelSerializer):

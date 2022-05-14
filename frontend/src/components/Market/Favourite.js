@@ -13,11 +13,11 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 import { useSelector, useDispatch } from "react-redux";
-import { favClose, selectFavOpen } from "./features/slices/widgetsSlice";
+import { favClose, selectFavOpen } from "../../redux/slices/widgetsSlice";
 import {
   removeItemFromFav,
   selectFavItems,
-} from "./features/slices/favouriteSlice";
+} from "../../redux/slices/favouriteSlice";
 
 const image = "https://source.unsplash.com/random";
 

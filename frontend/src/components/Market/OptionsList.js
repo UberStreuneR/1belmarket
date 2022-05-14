@@ -9,8 +9,8 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import Favourite from "../Market/Favourite";
 import Cart from "../Market/Cart";
 import { useDispatch, useSelector } from "react-redux";
-import { favOpen, cartOpen } from "./features/slices/widgetsSlice";
-import { selectCartItems } from "./features/slices/cartSlice";
+import { favOpen, cartOpen } from "../../redux/slices/widgetsSlice";
+import { selectCartItems } from "../../redux/slices/cartSlice";
 const RedBadge = styled(Badge)({
   ".css-106c1u2-MuiBadge-badge": { backgroundColor: "red", fontWeight: "bold" },
 });

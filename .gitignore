@@ -29,6 +29,7 @@ backend/run.sh
 # React
 node_modules/
 frontend/build/
+frontend/src/components/TestComponents/
 
 # Distribution / packaging
 .Python

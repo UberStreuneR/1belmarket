@@ -6,6 +6,7 @@ urlpatterns = [
     path('items/', views.ItemViewSet.as_view()),
     path('items-search/<str:key>', views.ItemSearchViewSet.as_view()),
     path('categories/', views.CategoryViewSet.as_view()),
+    path('categories/<int:pk>', views.CategoryDetailView.as_view(), name="category-detail"),
     path('categories-search/<str:key>', views.CategorySearchViewSet.as_view()),
     path('categories-children/<str:name>', views.CategoryChildrenViewSet.as_view()),
     path('orders/', views.OrderViewSet.as_view()),

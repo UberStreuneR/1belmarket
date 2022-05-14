@@ -1,23 +1,88 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
-import { Typography } from "@mui/material";
+import { Typography, Link, Grid } from "@mui/material";
 import { styled } from "@mui/system";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import "./styles/dropdown.css";
 import {
     useGetItemsQuery,
     useGetCategoriesQuery,
 } from "../../redux/slices/apiSlice";
+import "./handlers/dropdown-handlers";
+
+const DropdownCategoryLink = props => {
+    return (
+        <button
+            className="dropdown-link"
+            onClick={() => props.onClick()}
+            type="button">
+            {props.children}
+            <span className="dropdown-icon-right">{props.iconRight}</span>
+        </button>
+    );
+};
+
+const DropdownCategoryContainer = props => {
+    return (
+        <div className="dropdown-category-container">
+            <Typography variant="h4">{props.category.name}</Typography>
+            <Grid container spacing={2}>
+                {props.category.subcategories.map(subcategory => (
+                    <Grid item xs={4} key={subcategory.id}>
+                        <a className="dropdown-subcategory-link">
+                            {subcategory.name}
+                        </a>
+                    </Grid>
+                ))}
+            </Grid>
+        </div>
+    );
+};
 
 export const Dropdown = React.forwardRef((props, ref) => {
     const { data: categories, isSuccess } = useGetCategoriesQuery();
+    const [activeCategory, setActiveCategory] = useState(0);
 
-    console.log(isSuccess, categories);
+    const handleLinkClicked = cat => {
+        setActiveCategory(categories.indexOf(cat));
+    };
+
     return (
         <Paper ref={ref} className="dropdown-paper" elevation={3}>
-            {categories?.map(category => (
-                <Typography sx={{ p: 1 }}>{category.name}</Typography>
-            ))}
+            <Container maxWidth="md">
+                <Grid container spacing={3}>
+                    <Grid
+                        item
+                        xs={4}
+                        sx={{ display: "flex", flexDirection: "column" }}>
+                        {categories?.map(category => (
+                            <DropdownCategoryLink
+                                key={category.id}
+                                iconRight={
+                                    <ChevronRightIcon fontSize="large" />
+                                }
+                                onClick={() => handleLinkClicked(category)}>
+                                {category.name}
+                            </DropdownCategoryLink>
+                        ))}
+                    </Grid>
+                    <Grid
+                        item
+                        xs={8}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}>
+                        {categories?.[activeCategory] ? (
+                            <DropdownCategoryContainer
+                                category={categories[activeCategory]}
+                            />
+                        ) : null}
+                    </Grid>
+                </Grid>
+            </Container>
         </Paper>
     );
 });
