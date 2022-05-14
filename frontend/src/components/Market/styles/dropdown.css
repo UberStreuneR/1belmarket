@@ -17,11 +17,13 @@
     transform: translateY(-2rem);
     transition: opacity var(--speed), transform var(--speed) !important;
     padding: 2rem;
+    pointer-events: none;
 }
 
 .dropdown-paper.active {
     transform: translateY(0);
     opacity: 1;
+    pointer-events: auto;
 }
 
 .dropdown-link {
