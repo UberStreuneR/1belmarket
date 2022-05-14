@@ -9,7 +9,8 @@
         "dev": "webpack --node-env=development --watch",
         "build": "webpack --node-env=production",
         "watch": "npm run dev",
-        "start": "NODE_ENV=development webpack-dev-server --mode development"
+        "start": "NODE_ENV=development webpack-dev-server --mode development",
+        "start-win": "webpack-dev-server --node-env=development --mode development"
     },
     "keywords": [],
     "author": "",
