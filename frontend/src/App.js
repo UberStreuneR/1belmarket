@@ -7,11 +7,12 @@ import Market from "./pages/Market";
 export default function App() {
     return (
         //<Info />
-        <BrowserRouter>
-            <Routes>
-                <Route exact path="/" element={<Info />} />
-                <Route path="/market" element={<Market />} />
-            </Routes>
-        </BrowserRouter>
+        // <BrowserRouter>
+        //     <Routes>
+        //         <Route exact path="/" element={<Info />} />
+        //         <Route path="/market" element={<Market />} />
+        //     </Routes>
+        // </BrowserRouter>
+        <Market />
     ); // Return react module
 }
