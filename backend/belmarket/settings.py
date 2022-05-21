@@ -37,6 +37,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
 
     'api',
@@ -53,6 +54,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
 
 ROOT_URLCONF = 'belmarket.urls'
 

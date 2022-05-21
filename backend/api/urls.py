@@ -15,5 +15,8 @@ urlpatterns = [
     path('delete-items/', views.DeleteItemsView.as_view(), name='delete-items'),
     path('delete-categories/', views.DeleteCategoriesView.as_view(), name='delete-categories'),
     path('delete-all/', views.DeleteCategoriesAndItemsView.as_view(), name='delete-all'),
+    path('login/', views.UserAuthView.as_view(), name='login'),
+    path('register/', views.UserRegisterView.as_view(), name='register'),
+    # path('test/', views.TestAuthView.as_view(), name='test'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
