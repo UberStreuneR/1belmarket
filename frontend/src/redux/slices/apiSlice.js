@@ -11,18 +11,25 @@ export const apiSlice = createApi({
         getCategories: builder.query({
             query: () => "/categories",
         }),
+        getCategoryTree: builder.query({
+            query: () => "category-tree/",
+        }),
         searchItems: builder.query({
             query: key => `/items-search/${key}`,
         }),
     }),
 });
 
-export const { useGetItemsQuery, useGetCategoriesQuery, useSearchItemsQuery } =
-    apiSlice;
+export const {
+    useGetItemsQuery,
+    useGetCategoriesQuery,
+    useGetCategoryTreeQuery,
+    useSearchItemsQuery,
+} = apiSlice;
 
 const selectGetItemsResult = apiSlice.endpoints.getItems.select();
 export const selectGetItemsResultData = createSelector(
-    [selectGetItemsResult, (state, search) => search],
+    [selectGetItemsResult, (state, search) => search.toLowerCase()],
     (result, search) =>
         result.data?.filter(item =>
             item.hierarchy.toLowerCase().includes(search)

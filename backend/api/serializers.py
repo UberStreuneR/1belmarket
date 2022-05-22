@@ -1,5 +1,7 @@
+import json
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from rest_framework_recursive.fields import RecursiveField
 from .models import Item, Image, Category, Order
 
 
@@ -30,13 +32,14 @@ class CategorySerializer(serializers.ModelSerializer):
     # queryset = Category.objects.prefetch_related('subcategories')
     # parent = serializers.StringRelatedField() 
     # subcategories = serializers.HyperlinkedRelatedField(view_name="category-detail", read_only=True, many=True)
-    subcategories = SubcategorySerializer(many=True)
+    # subcategories = SubcategorySerializer(many=True)
+
+    # subcategories = RecursiveField(allow_null=True)
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'picture', 'subcategories']
-
-
+        # fields = ['id', 'name', 'picture', 'hierarchy']
+        fields = ['id', 'name', 'picture', 'subcategories', 'hierarchy']
 
 
 class OrderSerializer(serializers.ModelSerializer):

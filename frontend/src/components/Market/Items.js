@@ -13,20 +13,18 @@ import {
 import { useSelector } from "react-redux";
 
 const DefaultStack = props => {
-    if (props.all) {
-        console.log("ALLLLLLLLLLL");
-    }
     const search = useParams();
-    const searchString = search["*"].replace("/", ";");
-    const { data: items, isSuccess } = useGetItemsQuery();
+
+    let searchString = "";
+    if (search["*"]) {
+        searchString = search["*"].replace("/", ";");
+    }
+
+    useGetItemsQuery();
     const selected = useSelector(state =>
         selectGetItemsResultData(state, searchString)
     );
-    console.log("Selected: ", selected);
 
-    if (isSuccess) {
-        console.log(items);
-    }
     return (
         <Stack
             direction="row"
@@ -41,8 +39,8 @@ const DefaultStack = props => {
 function Items(props) {
     return (
         <Container sx={{ my: 3, position: "relative" }}>
-            <ItemHeader />
             <BrowserRouter>
+                <ItemHeader />
                 <Routes>
                     <Route exact path="/" element={<DefaultStack all />} />
                     <Route path="items/*" element={<DefaultStack />} />

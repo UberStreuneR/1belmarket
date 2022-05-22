@@ -13,7 +13,6 @@ const pageSize = 3;
 function ItemGrid(props) {
     const [currentPage, setCurrentPage] = useState(1);
     const { items } = props;
-    console.log(items);
     let pagesAmount;
     pagesAmount = Math.ceil(items?.length / pageSize);
     const handleChangePage = (event, newPage) => {
