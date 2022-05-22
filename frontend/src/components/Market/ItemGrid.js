@@ -11,41 +11,11 @@ const cardWidth = 250;
 const pageSize = 3;
 
 function ItemGrid(props) {
-    //props.category, prop.subcategory, props.searchString,
-    // const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const {
-        category = undefined,
-        subcategory = undefined,
-        key = undefined,
-    } = useParams();
-
-    let skipSearch = false;
-    if (category || subcategory) {
-        skipSearch = true;
-    }
-
-    console.log(category, subcategory, key);
-    const { data: items, isSuccess } = useGetItemsQuery();
+    const { items } = props;
     console.log(items);
-    // const { searchString, category, subcategory, pagination } = props;
-    // console.log(searchString, category, subcategory, pagination);
-
-    // useEffect(() => {
-    //   fetch(itemsRequestUrl)
-
-    //     .then((res) => res.json())
-    //     .then((data) => setItems(data));
-    // }, []);
     let pagesAmount;
-
-    // if (isSuccess) {
-    //     pagesAmount = Math.ceil(items.length / pageSize);
-    // }
     pagesAmount = Math.ceil(items?.length / pageSize);
-
-    // const pagesAmount = Math.ceil(items.length / pageSize);
-
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };

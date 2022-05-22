@@ -31,7 +31,7 @@ class ItemSearchViewSet(APIView):
     def get(self, request, key):
         items = Item.objects.filter(Q(name__icontains=key)
                                     | Q(article__icontains=key))  # case insensitive search by name and article fields
-        serializer = ItemSerializer(items, many=True)
+        serializer = ItemSerializer(items, many=True, context={"request": request})
         return Response(serializer.data)
 
 

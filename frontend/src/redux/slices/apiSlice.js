@@ -1,3 +1,4 @@
+import { createSelector } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 export const apiSlice = createApi({
@@ -18,3 +19,12 @@ export const apiSlice = createApi({
 
 export const { useGetItemsQuery, useGetCategoriesQuery, useSearchItemsQuery } =
     apiSlice;
+
+const selectGetItemsResult = apiSlice.endpoints.getItems.select();
+export const selectGetItemsResultData = createSelector(
+    [selectGetItemsResult, (state, search) => search],
+    (result, search) =>
+        result.data?.filter(item =>
+            item.hierarchy.toLowerCase().includes(search)
+        ) ?? []
+);
