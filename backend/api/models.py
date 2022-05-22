@@ -10,6 +10,7 @@ from client.models import Client
 from .utils import get_not_null_row, get_rows
 
 import os, openpyxl
+import json
 
 
 class CategoryManager(models.Manager):
@@ -69,6 +70,20 @@ class Category(models.Model):
                 self.hierarchy = self.parent.hierarchy + ";" + self.parent.name
         super(Category, self).save(*args, **kwargs)
     #def get_absolute_url(self):  # url to display on page that you can click and go to category grid
+
+
+    def serialize_to_json(self):
+        return self.serializable_object()
+        # return json.dumps(self.serializable_object())
+        # return self.subcategories
+
+    def serializable_object(self):
+        # "Recurse into tree to build a serializable object"
+        obj = {'id': self.id, 'name': self.name, 'children': [], 'open': False, 'hierarchy': self.hierarchy}
+        for child in self.subcategories.all():
+            obj['children'].append(child.serializable_object())
+        return obj
+
 
     class Meta:
         verbose_name_plural = 'categories'  # when displayed as plural (admin page), will be "categories" instead of the default "categorys"

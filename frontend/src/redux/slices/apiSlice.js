@@ -1,3 +1,4 @@
+import { createSelector } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 export const apiSlice = createApi({
@@ -21,6 +22,12 @@ export const apiSlice = createApi({
         }),
         getCategories: builder.query({
             query: () => "/categories",
+        }),
+        getCategoryTree: builder.query({
+            query: () => "category-tree/",
+        }),
+        searchItems: builder.query({
+            query: key => `/items-search/${key}`,
         }),
         loginUser: builder.mutation({
             query: ({ username, password }) => {
@@ -48,4 +55,15 @@ export const {
     useGetCategoriesQuery,
     useLoginUserMutation,
     useSignupUserMutation,
+    useGetCategoryTreeQuery,
+    useSearchItemsQuery,
 } = apiSlice;
+
+const selectGetItemsResult = apiSlice.endpoints.getItems.select();
+export const selectGetItemsResultData = createSelector(
+    [selectGetItemsResult, (state, search) => search.toLowerCase()],
+    (result, search) =>
+        result.data?.filter(item =>
+            item.hierarchy.toLowerCase().includes(search)
+        ) ?? []
+);

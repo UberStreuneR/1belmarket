@@ -18,6 +18,7 @@ from pathlib import Path
 from django.core.files import File
 from django.conf import settings
 import os
+import json
 
 
 class ItemViewSet(generics.ListAPIView):
@@ -33,7 +34,7 @@ class ItemSearchViewSet(APIView):
     def get(self, request, key):
         items = Item.objects.filter(Q(name__icontains=key)
                                     | Q(article__icontains=key))  # case insensitive search by name and article fields
-        serializer = ItemSerializer(items, many=True)
+        serializer = ItemSerializer(items, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -85,6 +86,12 @@ class CategoryChildrenViewSet(APIView):
             serializer = CategorySerializer(subcategories, many=True)
             return Response(serializer.data)
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class CategoryTreeView(APIView):
+    def get(self, request):
+        root_category = Category.objects.first()
+        return Response(root_category.serialize_to_json())
 
 
 class OrderViewSet(APIView):

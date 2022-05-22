@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Paper,
     InputBase,
@@ -18,6 +19,16 @@ function SearchBar(props) {
     const handleInputChange = e => {
         setValue(e.target.value);
     };
+
+    const navigate = useNavigate();
+
+    const handleSearchClicked = () => {
+        if (value != "") {
+            // window.location.pathname = "/search/" + value;
+            navigate("/search/" + value);
+        }
+    };
+
     return (
         <React.Fragment>
             <Paper
@@ -53,7 +64,8 @@ function SearchBar(props) {
                 <IconButton
                     color="inherit"
                     sx={{ p: "10px" }}
-                    aria-label="search">
+                    aria-label="search"
+                    onClick={handleSearchClicked}>
                     <SearchIcon />
                 </IconButton>
             </Paper>
