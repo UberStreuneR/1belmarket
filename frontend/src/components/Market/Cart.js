@@ -15,6 +15,9 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch, useSelector } from "react-redux";
 import { cartClose, selectCartOpen } from "../../redux/slices/widgetsSlice";
+import { useSubmitOrderMutation } from "../../redux/slices/apiSlice";
+import { selectUser } from "../../redux/slices/userSlice";
+import { selectToken } from "../../redux/slices/authSlice";
 import {
   removeItemFromCart,
   selectCartItems,
@@ -37,6 +40,25 @@ function Cart(props) {
       previousValue + currentItem.price * currentItem.amount,
     0
   );
+
+  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
+  const [orderMutation] = useSubmitOrderMutation();
+
+  const handleSubmitOrderClicked = () => {
+    const order = orderMutation({
+      username: user.username,
+      token: token["token"],
+      items: cartItems,
+    })
+      .then(res => {
+        console.log(res);
+        dispatch(clearCart());
+        handleClose();
+      })
+      .catch(err => console.log(err));
+  };
+
   return (
     <div>
       <Dialog
@@ -45,13 +67,11 @@ function Cart(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         maxWidth="md"
-        fullWidth={true}
-      >
+        fullWidth={true}>
         <DialogTitle
           id="alert-dialog-title"
           variant={"h4"}
-          sx={{ display: "flex", justifyContent: "space-between" }}
-        >
+          sx={{ display: "flex", justifyContent: "space-between" }}>
           Cart
           <IconButton onClick={() => dispatch(cartClose())}>
             <CloseIcon />
@@ -61,7 +81,7 @@ function Cart(props) {
           {cartItems.length > 0 ? (
             <Box sx={{ display: "flex", flexGrow: "1" }}>
               <Grid container sx={{ width: "70%" }}>
-                {cartItems.map((item) => (
+                {cartItems.map(item => (
                   <Grid item key={item.id} xs={12}>
                     <Card sx={{ display: "flex", m: 1 }}>
                       <CardMedia
@@ -81,8 +101,7 @@ function Cart(props) {
                           flexDirection: "column",
                           p: 1,
                           flexGrow: "1",
-                        }}
-                      >
+                        }}>
                         <Typography variant="h5">{item.name}</Typography>
                         <Typography variant="subtitle2">
                           {item.description}
@@ -94,29 +113,25 @@ function Cart(props) {
                           display: "flex",
                           alignItems: "center",
                           p: 1,
-                        }}
-                      >
+                        }}>
                         <Box
                           sx={{
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                          }}
-                        >
+                          }}>
                           {item.amount > 1 ? (
                             <IconButton
                               onClick={() =>
                                 dispatch(decrementItemAmount(item.id))
-                              }
-                            >
+                              }>
                               <RemoveIcon />
                             </IconButton>
                           ) : (
                             <IconButton
                               onClick={() =>
                                 dispatch(removeItemFromCart(item.id))
-                              }
-                            >
+                              }>
                               <DeleteOutlineIcon />
                             </IconButton>
                           )}
@@ -127,15 +142,13 @@ function Cart(props) {
                           <IconButton
                             onClick={() =>
                               dispatch(incrementItemAmount(item.id))
-                            }
-                          >
+                            }>
                             <AddIcon />
                           </IconButton>
                         </Box>
                         <Typography
                           variant={"h5"}
-                          sx={{ mx: 2, width: "80px" }}
-                        >
+                          sx={{ mx: 2, width: "80px" }}>
                           ${item.price * item.amount}
                         </Typography>
                       </Box>
@@ -149,8 +162,7 @@ function Cart(props) {
                   flexDirection: "column",
                   alignItems: "center",
                   flexGrow: 1,
-                }}
-              >
+                }}>
                 <Typography variant={"h6"}>
                   Amount of items: {cartItems.length}
                 </Typography>
@@ -159,11 +171,7 @@ function Cart(props) {
                 </Typography>
                 <Button
                   variant={"contained"}
-                  onClick={() => {
-                    dispatch(clearCart());
-                    handleClose();
-                  }}
-                >
+                  onClick={handleSubmitOrderClicked}>
                   Submit
                 </Button>
               </Box>

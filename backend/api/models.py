@@ -3,9 +3,8 @@ from django.utils.text import slugify
 from django.core.files import File
 from django.conf import settings
 from django.utils import timezone
-
 from transliterate import translit
-
+from django.contrib.auth.models import User
 from client.models import Client
 from .utils import get_not_null_row, get_rows
 
@@ -38,7 +37,7 @@ class CategoryManager(models.Manager):
             category = self.create(**fields)
             
             if picture is not None:
-                path = os.path.join(settings.DEFAULT_IMAGE_PATH, picture)
+                path = os.path.join(settings.DEFAULT_IMAGE_PATH, 'images', picture)
                 category.picture = File(open(path, 'rb'), name=category.name + ".jpg")
                 category.save()
 
@@ -112,7 +111,7 @@ class ItemManager(models.Manager):
                 pictures = pictures.split(';')
                 for picture_index in range(len(pictures)):
                     # get path for each picture
-                    path = os.path.join(settings.DEFAULT_IMAGE_PATH, pictures[picture_index])
+                    path = os.path.join(settings.DEFAULT_IMAGE_PATH, 'images', pictures[picture_index])
 
                     image_name = f"{item.article}_{picture_index}.jpg"    # BEEF-1_0.jpg
                     image_file = File(open(path, 'rb'), name=image_name)
@@ -139,30 +138,10 @@ class Item(models.Model):
 
     objects = ItemManager()
 
-
-    # def get_absolute_url(self):
-    #     return reverse("item", kwargs={'company': self.company, 'article': self.article})
-
-    # def get_cool_price(self):
-    #     if self.price == -1:
-    #         return "Цена не установлена"
-    #     if self.price == -2:
-    #         return "Цена по запросу"
-    #     price = str(self.price)
-    #     values = price.split(".")
-    #     values[1] = values[1][:2]
-    #     int_price = values[0]
-    #     for i in range(3, len(int_price) + 1, 4):
-    #         int_price = int_price[:-i] + " " + int_price[-i:]
-    #     return int_price + " руб."
-
     def __str__(self):
         return self.name + "_" + self.article
 
     def save(self, *args, **kwargs): # what happens when an item is saved (.save() method is called)
-        # if self.company:
-        #     self.url = self.get_absolute_url()
-
         if not self.parent_string:
             parent_hierarchy = self.hierarchy  # setting up the parent to be a Category object
             parent_hierarchy = parent_hierarchy[len(parent_hierarchy) - parent_hierarchy[::-1].find(";"):]  # "Food;Meat;Beef" --> "Beef"
@@ -170,11 +149,7 @@ class Item(models.Model):
         else:
             self.parent_category = Category.objects.get(name=self.parent_string)
 
-        self.slug = slugify(translit(self.name, 'ru', reversed=True))  # from cyrillic to latin so that a slug is not russian
-        # if self.name:
-        #     if self.name[0] != " " and self.name[:-1] != " ":
-        #         self.name = " " + self.name + " "
-        #     self.name_lowercase = self.name.lower()
+        self.slug = slugify(translit(self.name, 'ru', reversed=True))  # from cyrillic to latin so that a slug is not russian\
         self.hierarchy = self.parent_category.hierarchy + ";" + self.parent_category.name
         super(Item, self).save(*args, **kwargs)
         
@@ -196,36 +171,24 @@ class Image(models.Model):
 
 class OrderItem(models.Model):  # the model allows you to have a count of an item in your cart, like 10 apples
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    amount = models.IntegerField(default=1)
     ordered = models.BooleanField(default=False)  # when an order is finished, its order items all receive True value for that field
 
     def __str__(self):
-        return str(self.quantity) + " of " + self.item.name
+        return str(self.amount) + " of " + self.item.name
 
     def get_total_item_price(self):
         if self.item.price < 0:
             return 0
-        return self.quantity * self.item.price
+        return self.amount * self.item.price
 
-    # def get_cool_price(self):
-    #     # if self.item.price == -1:
-    #     #     return "Цена не установлена"
-    #     # if self.item.price == -2:
-    #     #     return "Цена по запросу"
-    #     price = str(self.get_total_item_price())
-    #     values = price.split(".")
-    #     values[1] = values[1][:2]
-    #     int_price = values[0]
-    #     for i in range(3, len(int_price) + 1, 4):
-    #         int_price = int_price[:-i] + " " + int_price[-i:]
-    #     return int_price
 
 
 class Order(models.Model):
-    client = models.ForeignKey(Client, related_name="orders", on_delete=models.CASCADE, blank=True) # client associated with order, created when upon order completion
+    user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE, blank=True, null=True) # user associated with order, created when upon order completion
     date = models.DateTimeField(default=timezone.now)  # order date
     items = models.ManyToManyField(OrderItem, blank=True)  # OrderItem objects present in that order
-    price = models.IntegerField(default=0)  # sum price of OrderItems
+    # price = models.IntegerField(default=0)  # sum price of OrderItems
     details = models.TextField(blank=True, null=True)  # additional information provided by a buyer
 
     fulfilled = models.BooleanField(default=False)  # order is fulfilled and commodities are delivered

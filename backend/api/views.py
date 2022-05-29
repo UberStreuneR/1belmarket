@@ -6,7 +6,7 @@ from .serializers import ItemSerializer, CategorySerializer, OrderSerializer, Us
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from .models import Item, Category, Order, Image
+from .models import Item, Category, Order, Image, OrderItem
 from django.db.models import Q
 from django.views import View
 from django.shortcuts import render, redirect
@@ -95,13 +95,42 @@ class CategoryTreeView(APIView):
 
 
 class OrderViewSet(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return Order.objects.all()
 
     def get(self, request):
         orders = self.get_queryset()
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        data = request.data
+        data_token = data['token']
+        username = data['username']
+        user = User.objects.get(username=username)
+        token = Token.objects.get(user=user)
+        items = data['items']
+        print(items)
+        if data_token == token.key:
+            order = Order.objects.create(user=user)
+            for data_item in items:
+                item = Item.objects.get(id=data_item['id'])
+                amount = data_item['amount']
+                order_item = OrderItem.objects.create(item=item, amount=amount)
+                order.items.add(order_item)
+            order.save()
+            return Response({'success': 'All good'})
+        return Response({'data_token': data_token, 'token': token.key, 'error': 'Token mismatch'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class OrderForUserIdView(APIView):
+    def get_queryset(self, pk):
+        return Order.objects.filter(user_id=pk)
+
+    def get(self, request, pk):
+        orders = self.get_queryset(pk)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 

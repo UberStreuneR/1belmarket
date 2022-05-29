@@ -11,61 +11,57 @@ import Cart from "../Market/Cart";
 import Profile from "../Market/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    favOpen,
-    cartOpen,
-    profileOpen,
+  favOpen,
+  cartOpen,
+  profileOpen,
 } from "../../redux/slices/widgetsSlice";
 import { selectCartItems } from "../../redux/slices/cartSlice";
 const RedBadge = styled(Badge)({
-    ".css-106c1u2-MuiBadge-badge": {
-        backgroundColor: "red",
-        fontWeight: "bold",
-    },
+  ".css-106c1u2-MuiBadge-badge": {
+    backgroundColor: "red",
+    fontWeight: "bold",
+  },
 });
 
 function OptionsList() {
-    const dispatch = useDispatch();
-    const cartItems = useSelector(selectCartItems);
-    return (
-        <React.Fragment>
-            <Favourite />
-            <Cart />
-            <Profile />
-            <Stack spacing={1} direction="row">
-                <IconButton sx={{ color: "black" }}>
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  return (
+    <React.Fragment>
+      <Favourite />
+      <Cart />
+      <Profile />
+      <Stack spacing={1} direction="row">
+        {/* <IconButton sx={{ color: "black" }}>
                     <BedtimeIcon />
                 </IconButton>
                 <IconButton sx={{ color: "black" }}>
                     <BedtimeOutlinedIcon />
-                </IconButton>
-                <IconButton
-                    sx={{ color: "black" }}
-                    onClick={() => dispatch(favOpen())}>
-                    <FavoriteBorderOutlinedIcon />
-                </IconButton>
-                <IconButton
-                    sx={{ color: "black" }}
-                    onClick={() => dispatch(cartOpen())}>
-                    {cartItems.length > 0 ? (
-                        <RedBadge
-                            badgeContent={cartItems.length}
-                            color="primary">
-                            <ShoppingCartOutlinedIcon />
-                        </RedBadge>
-                    ) : (
-                        <Badge badgeContent={cartItems.length} color="primary">
-                            <ShoppingCartOutlinedIcon />
-                        </Badge>
-                    )}
-                </IconButton>
-                <IconButton
-                    sx={{ color: "black" }}
-                    onClick={() => dispatch(profileOpen())}>
-                    <PersonOutlineOutlinedIcon />
-                </IconButton>
-            </Stack>
-        </React.Fragment>
-    );
+                </IconButton> */}
+        <IconButton sx={{ color: "black" }} onClick={() => dispatch(favOpen())}>
+          <FavoriteBorderOutlinedIcon />
+        </IconButton>
+        <IconButton
+          sx={{ color: "black" }}
+          onClick={() => dispatch(cartOpen())}>
+          {cartItems.length > 0 ? (
+            <RedBadge badgeContent={cartItems.length} color="primary">
+              <ShoppingCartOutlinedIcon />
+            </RedBadge>
+          ) : (
+            <Badge badgeContent={cartItems.length} color="primary">
+              <ShoppingCartOutlinedIcon />
+            </Badge>
+          )}
+        </IconButton>
+        <IconButton
+          sx={{ color: "black" }}
+          onClick={() => dispatch(profileOpen())}>
+          <PersonOutlineOutlinedIcon />
+        </IconButton>
+      </Stack>
+    </React.Fragment>
+  );
 }
 
 export default OptionsList;

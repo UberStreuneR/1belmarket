@@ -11,6 +11,7 @@ urlpatterns = [
     path('categories-search/<str:key>', views.CategorySearchViewSet.as_view()),
     path('categories-children/<str:name>', views.CategoryChildrenViewSet.as_view()),
     path('orders/', views.OrderViewSet.as_view()),
+    path('orders/<int:pk>', views.OrderForUserIdView.as_view()),
     path('upload-items/', views.UploadItemsFromExcel.as_view(), name='upload-items'),
     path('upload-categories/', views.UploadCategoriesFromExcel.as_view(), name='upload-categories'),
     path('delete-items/', views.DeleteItemsView.as_view(), name='delete-items'),
