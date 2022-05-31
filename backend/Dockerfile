@@ -17,3 +17,5 @@ RUN \
 COPY . .
 
 ENTRYPOINT [ "./entrypoint.sh" ]
+# ENTRYPOINT ["sh","/entrypoint.sh"]
+# RUN ./entrypoint.sh
