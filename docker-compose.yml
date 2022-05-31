@@ -16,8 +16,8 @@ services:
     build: ./frontend
     container_name: belmarket_frontend
     command: npm run start
-    volumes:
-      - ./frontend/:/usr/src/app/
+    # volumes:
+    #   - ./frontend/:/usr/src/app/
     ports:
       - 3000:3000
     env_file:

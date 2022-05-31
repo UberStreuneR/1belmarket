@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY ./package*.json .
 
+COPY . .
+
 RUN npm i
 
-COPY . .
+RUN npm i -D webpack-dev-server
