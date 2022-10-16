@@ -6,9 +6,12 @@ access.txt
 # Photoshop
 *.psd
 
+# VSCode settings
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
+*.py[cod] 
 *$py.class
 *__pycache__*
 # C extensions
@@ -17,15 +20,16 @@ __pycache__/
 
 # Django
 *.log
-settings.py
 db.sqlite3
 db.sqlite3-journal
-frontend/static/frontend/
-/media/
-/static/
+backend/media/*
+backend/static/*
+backend/run.sh
 
 # React
 node_modules/
+frontend/build/
+frontend/src/components/TestComponents/
 
 # Distribution / packaging
 .Python
@@ -107,7 +111,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+*.env
 .venv
 env/
 venv/

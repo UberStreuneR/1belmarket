@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: belmarket_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.dev.env
+
+  frontend:
+    build: ./frontend
+    container_name: belmarket_frontend
+    command: npm run start
+    # volumes:
+    #   - ./frontend/:/usr/src/app/
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.dev.env
+    depends_on:
+      - backend
+
+  database:
+    image: postgres:12-alpine
+    container_name: belmarket_database
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+    env_file:
+      - ./.dev.env
+
+volumes:
+  postgres_volume:

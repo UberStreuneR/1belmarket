@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Grid, Typography, Link, GlobalStyles } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -7,8 +8,7 @@ function Copyright(props) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}
-    >
+      {...props}>
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -22,30 +22,22 @@ function Copyright(props) {
 const footers = [
   {
     title: "Company",
-    description: ["Team", "History", "Contact us", "Locations"],
-  },
-  {
-    title: "Features",
-    description: [
-      "Cool stuff",
-      "Random feature",
-      "Team feature",
-      "Developer stuff",
-      "Another one",
-    ],
+    description: [{ title: "Team", link: "/team", id: 0 }],
   },
   {
     title: "Resources",
     description: [
-      "Resource",
-      "Resource name",
-      "Another resource",
-      "Final resource",
+      {
+        title: "GitHub",
+        link: "https://github.com/UberStreuneR/1belmarket/",
+        id: 0,
+        router: false,
+      },
     ],
   },
   {
     title: "Legal",
-    description: ["Privacy policy", "Terms of use"],
+    description: [{ title: "Privacy policy", link: "/privacy-policy", id: 0 }],
   },
 ];
 
@@ -59,28 +51,42 @@ function Footer(props) {
         maxWidth="md"
         component="footer"
         sx={{
-          borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+          borderTop: theme => `1px solid ${theme.palette.divider}`,
           mt: 4,
           py: [3, 4],
-        }}
-      >
+        }}>
         <Grid container spacing={4} justifyContent="space-evenly">
-          {footers.map((footer) => (
-            <Grid
-              item
-              xs={6}
-              sm={3}
-              key={footer.title}
-            >
+          {footers.map(footer => (
+            <Grid item xs={6} sm={3} key={footer.title}>
               <Typography variant="h6" color="text.primary" gutterBottom>
                 {footer.title}
               </Typography>
               <ul>
-                {footer.description.map((item) => (
-                  <li key={item}>
-                    <Link href="#" variant="subtitle1" color="text.secondary">
-                      {item}
-                    </Link>
+                {footer.description.map(item => (
+                  <li key={item.id}>
+                    {item.router ? (
+                      <RouterLink
+                        style={{
+                          textDecoration: "none",
+                          underline: "none",
+                          color: "black",
+                          fontSize: "18px",
+                        }}
+                        to={item.link}>
+                        {item.title}
+                      </RouterLink>
+                    ) : (
+                      <Link
+                        href={item.link}
+                        sx={{
+                          textDecoration: "none",
+                          underline: "none",
+                          color: "black",
+                          fontSize: "18px",
+                        }}>
+                        {item.title}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

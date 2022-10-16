@@ -1,40 +1,59 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "watch": {
-    "test": "{src,test}/*.js"
-  },
-  "scripts": {
-    "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production",
-    "watch": "npm run dev"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "^7.16.12",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "babel-loader": "^8.2.3",
-    "react": "^17.0.2",
-    "webpack": "^5.67.0",
-    "webpack-cli": "^4.9.2"
-  },
-  "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
-    "@mui/icons-material": "^5.5.1",
-    "@mui/material": "^5.5.3",
-    "@mui/styles": "^5.6.0",
-    "@mui/system": "^5.5.3",
-    "@reduxjs/toolkit": "^1.8.1",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.8",
-    "react-router-dom": "^6.0.0-beta.8",
-    "swiper": "^8.0.7"
-  },
-  "description": ""
+    "name": "frontend",
+    "version": "1.0.0",
+    "main": "index.js",
+    "watch": {
+        "test": "{src,test}/*.js"
+    },
+    "scripts": {
+        "dev": "webpack --node-env=development --watch",
+        "build": "webpack --node-env=production",
+        "watch": "npm run dev",
+        "start": "NODE_ENV=development webpack-dev-server --mode development",
+        "start-win": "webpack-dev-server --node-env=development --mode development"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.16.12",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/preset-react": "^7.16.7",
+        "@svgr/webpack": "^6.2.1",
+        "autoprefixer": "^10.4.7",
+        "babel-loader": "^8.2.3",
+        "clean-webpack-plugin": "^4.0.0",
+        "css-loader": "^6.7.1",
+        "css-minimizer-webpack-plugin": "^3.4.1",
+        "dotenv": "^16.0.0",
+        "html-webpack-plugin": "^5.5.0",
+        "mini-css-extract-plugin": "^2.6.0",
+        "postcss-loader": "^6.2.1",
+        "react": "^17.0.2",
+        "style-loader": "^3.3.1",
+        "webpack": "^5.67.0",
+        "webpack-cli": "^4.9.2",
+        "webpack-dev-server": "^4.8.1"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.8.2",
+        "@emotion/styled": "^11.8.1",
+        "@mui/icons-material": "^5.5.1",
+        "@mui/material": "^5.5.3",
+        "@mui/styles": "^5.6.0",
+        "@mui/system": "^5.5.3",
+        "@reduxjs/toolkit": "^1.8.1",
+        "react-dom": "^17.0.2",
+        "react-redux": "^7.2.8",
+        "react-router-dom": "^6.0.0-beta.8",
+        "react-transition-group": "^4.4.2",
+        "redux-persist": "^6.0.0",
+        "swiper": "^8.0.7"
+    },
+    "description": "",
+    "browserslist": [
+        "> 0.5%",
+        "not dead",
+        "last 20 versions"
+    ]
 }
