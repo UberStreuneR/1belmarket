@@ -155,3 +155,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Path to default tables and images
 DEFAULT_IMAGE_PATH = BASE_DIR / 'default_images_and_spreadsheets'
+
+# CRLF
